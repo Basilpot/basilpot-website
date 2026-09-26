@@ -33,6 +33,7 @@ export function SiteHeader({ currentPath }: { currentPath?: string }) {
         <nav aria-label="Site navigation" className="global-menu-panel">
           {link("Home", "/")}
           {link("Clients", "/clients")}
+          {link("Services", "/services")}
           {products.map((product) => (
             <a
               key={product.url}
