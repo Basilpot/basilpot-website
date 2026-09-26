@@ -22,10 +22,10 @@ const sections = [
 ]
 
 const ranges = [
-  ["Small travel operators", "NPR 60,000–100,000"],
-  ["Growing travel agencies", "NPR 100,000–175,000"],
-  ["Established travel companies", "NPR 175,000–300,000"],
-  ["Large agencies and travel brands", "From NPR 300,000"],
+  ["Small travel operators", "NPR 60,000–100,000", "USD 450–750"],
+  ["Growing travel agencies", "NPR 100,000–175,000", "USD 750–1,315"],
+  ["Established travel companies", "NPR 175,000–300,000", "USD 1,315–2,255"],
+  ["Large agencies and travel brands", "From NPR 300,000", "From USD 2,255"],
 ]
 ---
 
@@ -79,25 +79,27 @@ const ranges = [
         <h2>Travel website pricing</h2>
         <p>Project ranges, not rigid packages.</p>
         <p>
-          Most travel websites fall into one of these ranges. We confirm a price
-          after reviewing the website, content and required system work.
+          Most travel websites fall into one of these ranges. USD figures are
+          approximate, using NPR 133 = USD 1. We confirm a price after reviewing
+          the website, content and required system work.
         </p>
         <table>
           <caption class="sr-only">Travel website project ranges</caption>
           <thead
             ><tr
               ><th scope="col">Travel company</th><th scope="col"
-                >Project range</th
-              ></tr
+                >Project range (NPR)</th
+              ><th scope="col">Approx. USD</th></tr
             ></thead
           >
           <tbody>
             {
-              ranges.map(([name, price]) => (
+              ranges.map(([name, price, usd]) => (
                 <tr>
                   <>
                     <th scope="row">{name}</th>
                     <td>{price}</td>
+                    <td>{usd}</td>
                   </>
                 </tr>
               ))
