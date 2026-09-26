@@ -1,36 +1,11 @@
 ---
-import SiteShell from "../components/site-shell.astro"
-import { clients } from "../data/clients"
+import { ClientStage } from "../components/client-stage"
 import Main from "../layouts/main.astro"
 ---
 
 <Main
   title="Clients | Basilpot"
-  description="Websites for businesses, travel companies and organisations."
+  description="Products and client work by Basilpot, a web studio in Nepal."
 >
-  <SiteShell>
-    <article>
-      <h1>Clients</h1>
-      <p>We build in the web.</p>
-      <p>
-        Basilpot is a small remote web studio based in Nepal. We design and
-        develop websites for businesses, travel companies and ecommerce brands.
-      </p>
-      {
-        clients.map((client) => (
-          <section>
-            <h2>
-              <a href={client.url} target="_blank" rel="noreferrer">
-                {client.name}
-              </a>
-            </h2>
-            <p>{client.description ?? client.summary}</p>
-            {client.credit === "growfore" && (
-              <p class="document-note">In collaboration with Growfore.</p>
-            )}
-          </section>
-        ))
-      }
-    </article>
-  </SiteShell>
+  <ClientStage client:load />
 </Main>

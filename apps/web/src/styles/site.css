@@ -305,3 +305,262 @@
     outline-color: Highlight;
   }
 }
+
+/* Client stage restores the original products-and-work deployment. */
+.client-stage {
+  --client-background: oklch(0 0 0);
+  --client-ink: oklch(1 0 0);
+  display: flex;
+  min-height: 100svh;
+  flex-direction: column;
+  overflow-x: hidden;
+  background: var(--client-background);
+  color: var(--client-ink);
+  font-family: "Livvic", ui-sans-serif, system-ui, sans-serif;
+  transition-property: background-color, color;
+  transition-duration: 220ms;
+  transition-timing-function: ease;
+}
+
+.client-theme-hex-healing-hub {
+  --client-background: oklch(0.47 0.15 319);
+}
+.client-theme-hope-fertility {
+  --client-background: oklch(0.67 0.16 47);
+  --client-ink: oklch(0.18 0.03 47);
+}
+.client-theme-sadp-nepal {
+  --client-background: oklch(0.61 0.18 145);
+  --client-ink: oklch(0.16 0.04 145);
+}
+.client-theme-walk-through-nepal {
+  --client-background: oklch(0.6037 0.1777 42.01);
+  --client-ink: oklch(0.17 0.03 42);
+}
+.client-theme-essence-treks-nepal {
+  --client-background: oklch(0.5731 0.2145 258.25);
+}
+.client-theme-into-nepal-treks {
+  --client-background: oklch(0.5526 0.139 246.57);
+}
+.client-theme-limestone-treks {
+  --client-background: oklch(0.6095 0.11 221.99);
+  --client-ink: oklch(0.16 0.03 222);
+}
+.client-theme-summit-luxury-treks {
+  --client-background: oklch(0.6698 0.1605 57.65);
+  --client-ink: oklch(0.18 0.03 58);
+}
+.client-theme-hi-nepal-treks {
+  --client-background: oklch(0.5296 0.1495 148.99);
+}
+.client-theme-lovely-trips-nepal {
+  --client-background: oklch(0.5796 0.061 116.04);
+  --client-ink: oklch(0.15 0.025 116);
+}
+.client-theme-tmh-adventure {
+  --client-background: oklch(0.4806 0.176 24.4);
+}
+
+.client-skip-link {
+  position: fixed;
+  z-index: 100;
+  inset-block-start: 0.75rem;
+  inset-inline-start: 0.75rem;
+  translate: 0 -200%;
+  padding: 0.65rem 0.8rem;
+  background: var(--client-ink);
+  color: var(--client-background);
+  font-weight: 700;
+}
+
+.client-skip-link:focus {
+  translate: 0;
+}
+
+.client-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 2rem;
+  padding: 1.25rem;
+}
+
+.client-nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1.5rem;
+  font-family: "Inter", ui-sans-serif, system-ui, sans-serif;
+  font-size: 1rem;
+  font-weight: 700;
+}
+
+.client-nav a,
+.client-detail a {
+  color: inherit;
+  text-decoration: underline;
+  text-underline-offset: 0.25em;
+}
+
+.client-nav a {
+  display: inline-flex;
+  min-height: 2.75rem;
+  align-items: center;
+}
+
+.client-nav a:focus-visible,
+.client-detail a:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 4px;
+}
+
+.client-logo {
+  display: flex;
+  width: 3.5rem;
+  min-height: 2.75rem;
+  flex: none;
+  align-items: center;
+  overflow: hidden;
+}
+
+.client-logo img {
+  width: 8.5rem;
+  max-width: none;
+  filter: invert(1);
+}
+
+.client-main {
+  display: flex;
+  flex: 1;
+  align-items: center;
+  padding: 4rem 1.25rem 5rem;
+}
+
+.client-list {
+  width: 100%;
+  max-width: 64rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.client-trigger {
+  display: flex;
+  width: 100%;
+  align-items: baseline;
+  gap: 0.55rem;
+  border: 0;
+  background: transparent;
+  padding: 0.08rem 0;
+  color: inherit;
+  text-align: start;
+  cursor: pointer;
+  font-family: "Inter", ui-sans-serif, system-ui, sans-serif;
+  font-size: 1.55rem;
+  font-weight: 700;
+  line-height: 1.18;
+}
+
+.client-trigger:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 3px;
+}
+
+.client-number {
+  flex: 0 0 3.2rem;
+  opacity: 0.32;
+  font-variant-numeric: tabular-nums;
+  transition: opacity 150ms ease;
+}
+
+.client-name {
+  opacity: 0.32;
+  transition: opacity 150ms ease;
+}
+
+.client-trigger:is(:focus-visible, .is-active)
+  :is(.client-number, .client-name) {
+  opacity: 1;
+}
+
+@media (hover: hover) {
+  .client-trigger:hover :is(.client-number, .client-name) {
+    opacity: 1;
+  }
+}
+
+.client-detail {
+  max-width: 64rem;
+  padding: 0.9rem 0 1.05rem 3.75rem;
+  animation: client-reveal 220ms ease-out both;
+}
+
+.client-detail > p:not(.client-credit) {
+  font-size: 1.25rem;
+  line-height: 1.42;
+  text-wrap: pretty;
+}
+
+.client-credit {
+  margin-bottom: 0.5rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  opacity: 0.78;
+}
+
+.client-visit {
+  display: inline-flex;
+  min-height: 2.75rem;
+  align-items: center;
+  gap: 0.35rem;
+  margin-top: 0.65rem;
+  font-size: 0.95rem;
+  font-weight: 700;
+}
+
+@keyframes client-reveal {
+  from {
+    opacity: 0;
+    transform: translateY(-0.35rem);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (min-width: 40rem) {
+  .client-header {
+    padding: 1.75rem;
+  }
+  .client-nav {
+    font-size: 1.125rem;
+  }
+  .client-main {
+    padding: 5rem 1.75rem;
+  }
+  .client-trigger {
+    gap: 0.7rem;
+    font-size: 2rem;
+  }
+  .client-number {
+    flex-basis: 4rem;
+  }
+  .client-detail {
+    padding-inline-start: 4.7rem;
+  }
+  .client-detail > p:not(.client-credit) {
+    font-size: 1.8rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .client-stage,
+  .client-name,
+  .client-number {
+    transition: none;
+  }
+  .client-detail {
+    animation: none;
+  }
+}
