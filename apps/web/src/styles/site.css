@@ -194,10 +194,10 @@
 }
 .document h1,
 .client-page-title {
-  position: fixed;
+  position: absolute;
   z-index: 2;
   inset-block-start: 50%;
-  inset-inline-start: 1rem;
+  inset-inline-start: 0;
   margin: 0;
   font-size: 0.875rem;
   font-weight: 500;
@@ -207,6 +207,7 @@
   white-space: nowrap;
   writing-mode: vertical-rl;
   transform: translateY(-50%) rotate(180deg);
+  pointer-events: none;
 }
 .document h2 {
   margin-bottom: 0.875rem;
