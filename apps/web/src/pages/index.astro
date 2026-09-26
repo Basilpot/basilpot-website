@@ -1,25 +1,850 @@
 ---
 import "@workspace/ui/globals.css"
-import { Button } from "@workspace/ui/components/button"
+import { clients } from "../data/clients"
+import { products } from "../data/products"
+
+type SheetRow = {
+  sheet: string
+  item: string
+  details: string
+  href?: string
+  image?: string
+  imageAlt?: string
+}
+
+const rows: SheetRow[] = [
+  {
+    sheet: "Home",
+    item: "We build in the web.",
+    details:
+      "Basilpot is a small remote web studio based in Nepal. We design and develop websites for businesses, travel companies and ecommerce brands.",
+  },
+  ...clients.map((client) => ({
+    sheet: "Work",
+    item: client.name,
+    details: [
+      client.kind,
+      client.description,
+      client.summary,
+      client.detail,
+      client.credit === "growfore"
+        ? "In collaboration with Growfore."
+        : undefined,
+    ]
+      .filter(Boolean)
+      .join(" — "),
+    href: client.url,
+    image: client.image,
+    imageAlt: client.image ? `${client.name} website` : undefined,
+  })),
+  {
+    sheet: "Travel",
+    item: "TripEleven",
+    details:
+      "A website and trip catalogue system for tour and trekking companies. We design the public website and provide the system behind it for managing trips, itineraries, content and enquiries.",
+    href: "https://tripeleven.com/",
+  },
+  {
+    sheet: "Travel",
+    item: "Build and manage trips",
+    details:
+      "Add trip facts, pricing, inclusions, FAQs and media in the dashboard. Published websites use that structured information across trip pages and the trip catalogue.",
+    image: "/travel/dashboard.png",
+    imageAlt: "TripEleven trip management dashboard",
+  },
+  {
+    sheet: "Travel",
+    item: "Write itineraries day by day",
+    details:
+      "Manage each day in a structured editor instead of one long text field. Days can include titles, descriptions and altitude information.",
+    image: "/travel/itinerary.png",
+    imageAlt: "TripEleven itinerary editor",
+  },
+  {
+    sheet: "Travel",
+    item: "Organize the website",
+    details:
+      "Manage navigation, featured trips and the content people use to move around the public website without editing code.",
+    image: "/travel/navigation.png",
+    imageAlt: "TripEleven website navigation editor",
+  },
+  {
+    sheet: "Travel",
+    item: "Publish content",
+    details:
+      "Write and publish blog posts and other useful travel content from the same system as the trip catalogue.",
+    image: "/travel/content.png",
+    imageAlt: "TripEleven content publishing screen",
+  },
+  {
+    sheet: "Travel",
+    item: "Collect enquiries",
+    details:
+      "Each trip can have an enquiry form. Enquiries are stored in the dashboard with the trip and contact information needed to respond.",
+  },
+  {
+    sheet: "Travel",
+    item: "Structure for search",
+    details:
+      "Trips, destinations, activities and regions create many related pages. We structure these relationships, URLs, metadata and internal links deliberately. When an existing travel website is migrated, we can plan redirects and preserve important URLs where appropriate.",
+  },
+  {
+    sheet: "Travel",
+    item: "Shared system, individual websites",
+    details:
+      "The CMS is the underlying system. The public website is designed around the travel company and does not have to look like other websites using the same system.",
+  },
+  {
+    sheet: "Travel",
+    item: "Pricing",
+    details:
+      "Travel websites start from NPR 95,000. Larger websites, migrations, multilingual systems, booking functionality and custom integrations are quoted based on scope.",
+  },
+  ...[
+    ["Small travel operators", "NPR 60,000–100,000"],
+    ["Growing travel agencies", "NPR 100,000–175,000"],
+    ["Established travel companies", "NPR 175,000–300,000"],
+    ["Large agencies and travel brands", "From NPR 300,000"],
+  ].map(([item, details]) => ({ sheet: "Pricing", item, details })),
+  {
+    sheet: "Pricing",
+    item: "What affects pricing",
+    details:
+      "Design scope, content migration, custom functionality, multilingual requirements, booking systems, integrations, content entry, custom admin workflows and SEO migration.",
+  },
+  {
+    sheet: "Pricing",
+    item: "Trips are managed content",
+    details:
+      "Number of trips alone does not necessarily determine development cost because trips use the same CMS structure. Migrating or manually entering large volumes of trips is separate work and is priced by volume and source quality.",
+  },
+  {
+    sheet: "Pricing",
+    item: "Starting a project",
+    details:
+      "Send us your existing website, approximate trip count and any booking, payment, migration or multilingual requirements. We will reply with questions or a scoped range.",
+  },
+  {
+    sheet: "Ecommerce",
+    item: "Tasche",
+    details:
+      "Our ecommerce system. We use it to build custom online stores while reusing the catalogue, content and storefront infrastructure underneath. We build stores around the business instead of starting the underlying store system from zero every time.",
+  },
+  {
+    sheet: "Ecommerce",
+    item: "Products and collections",
+    details:
+      "Products, collections and supporting content need clear relationships and URLs. We structure the catalogue so customers and search engines can navigate it properly.",
+  },
+  {
+    sheet: "Ecommerce",
+    item: "Store content",
+    details:
+      "Manage the informational and editorial pages around the catalogue.",
+  },
+  {
+    sheet: "Ecommerce",
+    item: "Storefront design",
+    details:
+      "The public website is designed around the brand instead of forcing every store into the same visual template.",
+  },
+  {
+    sheet: "Ecommerce",
+    item: "Ash & Moss",
+    details:
+      "A working demonstration of the ecommerce system: a custom furniture storefront with products organized by furniture type.",
+    href: "https://ashandmoss.com/",
+    image: "/ecommerce/ash-and-moss.jpg",
+    imageAlt: "Upholstered wooden armchair from the Ash and Moss storefront",
+  },
+  {
+    sheet: "About",
+    item: "Basilpot",
+    details:
+      "A small remote web studio based in Nepal. We work across design, development and search, with each person focused on the part of the work they know best.",
+  },
+  {
+    sheet: "About",
+    item: "Tej Kshetri — Technical Lead",
+    details:
+      "Tej works on web design, frontend and backend development, architecture, deployment, CMS and ecommerce systems.",
+    href: "https://kshetritej.com.np/",
+  },
+  {
+    sheet: "About",
+    item: "Aashish Khadka — Human Lead",
+    details:
+      "Aashish works on client relationships, SEO, search research, technical audits, on-page improvements and content structure.",
+    href: "https://aashishkhadka.com.np/",
+  },
+  ...products.map((product) => ({
+    sheet: "Products",
+    item: product.name,
+    details: product.description,
+    href: product.url,
+  })),
+]
+
+const brands = [
+  "Rancho Steak House",
+  "Maret Migration",
+  "Hope Fertility & IVF Centre",
+  "Unistar Education",
+  "Happy Face",
+  "C&C Advance Polyclinic and Cardiac Care",
+  "Nistha Education",
+  "Himalayan Nirvana Spa",
+  "Begnas Aqua Park Resort & Restaurant",
+  "Piri-Siri",
+  "Purple record and dove brand mark",
+  "Nirvana Restaurant & Bar",
+  "Infochip",
+  "Behaygraphy",
+  "Bobby Maret",
+  "Sorha Aana Homes",
+  "Rivet Engineering Services",
+  "Blonde Me Unisex Salon",
+  "Pinnacle Academy",
+  "Kunjana",
+  "Red eight-spoked wheel brand mark",
+  "International Hotel Training Center",
+]
+
+for (const [index, brand] of brands.entries()) {
+  rows.push({
+    sheet: "Media",
+    item: brand,
+    details: "Selected brand supported through digital media and marketing.",
+    image:
+      index === 10
+        ? "/clients/11.png"
+        : index === 20
+          ? "/clients/21.png"
+          : undefined,
+    imageAlt: index === 10 || index === 20 ? brand : undefined,
+  })
+}
+
+const tabs = [
+  "Home",
+  "Work",
+  "Travel",
+  "Pricing",
+  "Ecommerce",
+  "About",
+  "Products",
+  "Media",
+  "Contact",
+]
 ---
 
 <html lang="en">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width" />
+    <meta
+      name="description"
+      content="Basilpot is a remote web studio in Nepal building business, travel and ecommerce websites."
+    />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <title>Astro App</title>
+    <title>Basilpot — web studio in Nepal</title>
   </head>
   <body>
-    <div class="flex min-h-svh p-6">
-      <div class="flex max-w-md min-w-0 flex-col gap-4 text-sm leading-loose">
-        <div>
-          <h1 class="font-medium">Project ready!</h1>
-          <p>You may now add components and start building.</p>
-          <p>We've already added the button component for you.</p>
-          <Button client:load className="mt-2">Button</Button>
-        </div>
+    <a class="skip-link" href="#sheet">Skip to sheet</a>
+
+    <header class="app-header">
+      <div class="sheet-icon" aria-hidden="true">
+        <span></span><span></span><span></span>
       </div>
+      <div class="title-block">
+        <h1>Basilpot</h1>
+        <p>Web studio, Nepal</p>
+      </div>
+      <a class="contact-button" href="#contact">Start a project</a>
+    </header>
+
+    <nav class="menu-bar" aria-label="Workbook sections">
+      {tabs.map((tab) => <a href={`#${tab.toLowerCase()}`}>{tab}</a>)}
+    </nav>
+
+    <div class="formula-bar" aria-hidden="true">
+      <span class="name-box">A1</span>
+      <span class="formula-symbol">fx</span>
+      <span class="formula-value">We build in the web.</span>
     </div>
+
+    <p class="scroll-cue">Scroll sideways to view every column →</p>
+
+    <main id="sheet" class="sheet-scroll" tabindex="-1">
+      <table class="sheet-grid">
+        <caption
+          >All Basilpot services, work, products, company information and
+          project enquiry details</caption
+        >
+        <colgroup>
+          <col class="row-number-column" />
+          <col class="section-column" />
+          <col class="item-column" />
+          <col class="details-column" />
+          <col class="link-column" />
+        </colgroup>
+        <thead>
+          <tr>
+            <th class="corner" scope="col"></th>
+            <th scope="col">A</th>
+            <th scope="col">B</th>
+            <th scope="col">C</th>
+            <th scope="col">D</th>
+          </tr>
+          <tr class="column-labels">
+            <th scope="col">#</th>
+            <th scope="col">Sheet</th>
+            <th scope="col">Item</th>
+            <th scope="col">Details</th>
+            <th scope="col">Link / media</th>
+          </tr>
+        </thead>
+        {
+          rows.map((row, index) => {
+            const isFirstInSheet =
+              index === 0 || rows[index - 1]?.sheet !== row.sheet
+            return (
+              <tbody id={isFirstInSheet ? row.sheet.toLowerCase() : undefined}>
+                <tr>
+                  <th class="row-number" scope="row">
+                    {index + 1}
+                  </th>
+                  <td
+                    class:list={[
+                      "section-cell",
+                      { "section-start": isFirstInSheet },
+                    ]}
+                  >
+                    {row.sheet}
+                  </td>
+                  <td class="item-cell">{row.item}</td>
+                  <td>{row.details}</td>
+                  <td class="media-cell">
+                    {row.image && (
+                      <a href={row.image} target="_blank" rel="noreferrer">
+                        <img
+                          src={row.image}
+                          alt={row.imageAlt}
+                          width="240"
+                          height="150"
+                          loading="lazy"
+                        />
+                      </a>
+                    )}
+                    {row.href && (
+                      <a href={row.href} target="_blank" rel="noreferrer">
+                        Visit website
+                      </a>
+                    )}
+                  </td>
+                </tr>
+              </tbody>
+            )
+          })
+        }
+        <tbody id="contact">
+          <tr>
+            <th class="row-number" scope="row">{rows.length + 1}</th>
+            <td class="section-cell section-start">Contact</td>
+            <td class="item-cell">Start a project</td>
+            <td>
+              Tell us what needs building. This form opens the details in your
+              email app so you can review them before sending.
+            </td>
+            <td><a href="mailto:seed@basilpot.com">seed@basilpot.com</a></td>
+          </tr>
+          <tr>
+            <th class="row-number" scope="row">{rows.length + 2}</th>
+            <td colspan="4" class="form-cell">
+              <form id="enquiry-form" class="enquiry-form">
+                <label
+                  ><span>Name (required)</span><input
+                    name="name"
+                    autocomplete="name"
+                    required
+                  /></label
+                >
+                <label
+                  ><span>Company</span><input
+                    name="company"
+                    autocomplete="organization"
+                  /></label
+                >
+                <label>
+                  <span>Email (required)</span>
+                  <input
+                    name="email"
+                    type="email"
+                    autocomplete="email"
+                    required
+                  />
+                </label>
+                <label>
+                  <span>Existing website</span>
+                  <input name="website" type="url" autocomplete="url" />
+                </label>
+                <label>
+                  <span>What do you need? (required)</span>
+                  <select name="project" required>
+                    <option value="" selected disabled
+                      >Select a project type</option
+                    >
+                    <option>Business website</option>
+                    <option>Travel website</option>
+                    <option>Ecommerce website</option>
+                    <option>Website migration</option>
+                    <option>Ongoing maintenance</option>
+                  </select>
+                </label>
+                <label>
+                  <span>Approximate budget</span>
+                  <input name="budget" placeholder="NPR 100,000–175,000" />
+                </label>
+                <label>
+                  <span>Preferred launch timeframe</span>
+                  <input
+                    name="timeframe"
+                    placeholder="For example, March 2027"
+                  />
+                </label>
+                <label class="message-field">
+                  <span>Message (required)</span>
+                  <textarea
+                    name="message"
+                    rows="5"
+                    required
+                    placeholder="Describe the website, content, migration and any booking or payment requirements."
+                  ></textarea>
+                </label>
+                <button type="submit">Prepare email</button>
+              </form>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </main>
+
+    <nav class="sheet-tabs" aria-label="Sheet tabs">
+      <a class="all-tab" href="#sheet">All content</a>
+      {tabs.slice(1).map((tab) => <a href={`#${tab.toLowerCase()}`}>{tab}</a>)}
+    </nav>
+
+    <script>
+      const form = document.querySelector<HTMLFormElement>("#enquiry-form")
+
+      form?.addEventListener("submit", (event) => {
+        event.preventDefault()
+        const data = new FormData(form)
+        const subject = `Project enquiry from ${data.get("name") || "website visitor"}`
+        const body = [
+          `Name: ${data.get("name")}`,
+          `Company: ${data.get("company")}`,
+          `Email: ${data.get("email")}`,
+          `Existing website: ${data.get("website")}`,
+          `Project: ${data.get("project")}`,
+          `Budget: ${data.get("budget")}`,
+          `Launch timeframe: ${data.get("timeframe")}`,
+          "",
+          String(data.get("message")),
+        ].join("\n")
+
+        window.location.href = `mailto:seed@basilpot.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`
+      })
+    </script>
   </body>
 </html>
+
+<style>
+  :root {
+    --sheet-accent: oklch(0.53 0.14 151);
+    --sheet-accent-strong: oklch(0.42 0.12 151);
+    --sheet-accent-soft: oklch(0.96 0.035 151);
+    --sheet-chrome: oklch(0.975 0.002 250);
+    --sheet-grid: oklch(0.87 0.004 250);
+    --sheet-label: oklch(0.43 0.01 250);
+  }
+
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 11rem;
+  }
+
+  body {
+    min-width: 20rem;
+    padding-bottom: 3rem;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 0.875rem;
+    line-height: 1.45;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  .skip-link {
+    position: fixed;
+    z-index: 50;
+    inset-block-start: 0.5rem;
+    inset-inline-start: 0.5rem;
+    translate: 0 -150%;
+    padding: 0.65rem 0.8rem;
+    background: var(--foreground);
+    color: var(--background);
+  }
+
+  .skip-link:focus {
+    translate: 0;
+  }
+  :focus-visible {
+    outline: 2px solid var(--sheet-accent-strong);
+    outline-offset: 2px;
+  }
+
+  .app-header {
+    display: flex;
+    min-height: 4.25rem;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.55rem 1rem 0.35rem;
+  }
+
+  .sheet-icon {
+    display: grid;
+    width: 2.25rem;
+    height: 2.75rem;
+    flex: none;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(4, 1fr);
+    gap: 1px;
+    padding: 0.6rem 0.4rem;
+    border-radius: 0.2rem;
+    background: var(--sheet-accent);
+  }
+
+  .sheet-icon span {
+    grid-row: 2 / 5;
+    border: 1px solid var(--background);
+  }
+  .title-block {
+    min-width: 0;
+  }
+  .title-block h1 {
+    margin: 0;
+    font-size: 1.125rem;
+    font-weight: 400;
+    line-height: 1.25;
+  }
+  .title-block p {
+    margin: 0.15rem 0 0;
+    color: var(--muted-foreground);
+    font-size: 0.75rem;
+  }
+
+  .contact-button {
+    display: inline-flex;
+    min-height: 2.5rem;
+    align-items: center;
+    margin-inline-start: auto;
+    padding-inline: 1rem;
+    border-radius: 1.25rem;
+    background: var(--sheet-accent);
+    color: var(--background);
+    font-weight: 600;
+    text-decoration: none;
+  }
+
+  .menu-bar {
+    display: flex;
+    min-height: 2rem;
+    align-items: center;
+    gap: 0.25rem;
+    overflow-x: auto;
+    padding-inline: 0.75rem;
+    white-space: nowrap;
+    scrollbar-width: thin;
+  }
+
+  .menu-bar a,
+  .sheet-tabs a {
+    color: inherit;
+    text-decoration: none;
+  }
+  .menu-bar a {
+    padding: 0.35rem 0.55rem;
+    border-radius: 0.25rem;
+  }
+
+  .formula-bar {
+    display: grid;
+    min-height: 2.5rem;
+    grid-template-columns: 5rem 2.75rem 1fr;
+    align-items: center;
+    border-block: 1px solid var(--sheet-grid);
+  }
+
+  .formula-bar > span {
+    padding-inline: 0.75rem;
+  }
+  .name-box,
+  .formula-symbol {
+    border-inline-end: 1px solid var(--sheet-grid);
+  }
+  .formula-symbol {
+    color: var(--sheet-label);
+    font-family: Georgia, serif;
+    font-style: italic;
+  }
+  .formula-value {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .scroll-cue {
+    display: none;
+  }
+  .sheet-scroll {
+    overflow-x: auto;
+    scroll-margin-top: 10rem;
+  }
+
+  .sheet-grid {
+    width: 100%;
+    min-width: 64rem;
+    border-collapse: separate;
+    border-spacing: 0;
+    table-layout: fixed;
+  }
+
+  .sheet-grid caption {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+  }
+
+  .row-number-column {
+    width: 3.25rem;
+  }
+  .section-column {
+    width: 8.5rem;
+  }
+  .item-column {
+    width: 17rem;
+  }
+  .details-column {
+    width: auto;
+  }
+  .link-column {
+    width: 14rem;
+  }
+
+  .sheet-grid th,
+  .sheet-grid td {
+    padding: 0.6rem 0.75rem;
+    border-inline-end: 1px solid var(--sheet-grid);
+    border-block-end: 1px solid var(--sheet-grid);
+    text-align: start;
+    vertical-align: top;
+    overflow-wrap: break-word;
+  }
+
+  .sheet-grid thead th {
+    position: sticky;
+    z-index: 2;
+    inset-block-start: 0;
+    height: 1.75rem;
+    padding-block: 0.2rem;
+    background: var(--sheet-chrome);
+    color: var(--sheet-label);
+    font-size: 0.75rem;
+    font-weight: 500;
+    text-align: center;
+    vertical-align: middle;
+  }
+
+  .sheet-grid thead .column-labels th {
+    inset-block-start: 1.75rem;
+    padding-block: 0.5rem;
+    color: var(--foreground);
+    font-size: 0.8125rem;
+    font-weight: 600;
+    text-align: start;
+  }
+
+  .sheet-grid thead .column-labels th:first-child {
+    text-align: center;
+  }
+
+  .row-number {
+    background: var(--sheet-chrome);
+    color: var(--sheet-label);
+    font-size: 0.75rem;
+    font-weight: 400;
+    text-align: center !important;
+  }
+
+  .section-cell,
+  .item-cell {
+    font-weight: 600;
+  }
+  .section-start {
+    color: var(--sheet-accent-strong);
+    box-shadow: inset 3px 0 0 var(--sheet-accent);
+  }
+  .media-cell {
+    display: grid;
+    gap: 0.6rem;
+  }
+
+  .media-cell a,
+  .sheet-grid td > a {
+    color: var(--sheet-accent-strong);
+    text-decoration-thickness: from-font;
+    text-underline-offset: 0.2em;
+  }
+
+  .media-cell img {
+    width: 100%;
+    height: auto;
+    max-height: 8rem;
+    object-fit: cover;
+    outline: 1px solid oklch(0 0 0 / 0.1);
+  }
+
+  .form-cell {
+    padding: 1.25rem !important;
+    background: var(--sheet-accent-soft);
+  }
+
+  .enquiry-form {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1rem;
+    max-width: 58rem;
+  }
+
+  .enquiry-form label {
+    display: grid;
+    gap: 0.35rem;
+    font-size: 0.8125rem;
+    font-weight: 600;
+  }
+
+  .enquiry-form input,
+  .enquiry-form select,
+  .enquiry-form textarea {
+    width: 100%;
+    min-height: 2.75rem;
+    padding: 0.6rem 0.7rem;
+    border: 1px solid var(--sheet-grid);
+    border-radius: 0.2rem;
+    background: var(--background);
+    color: var(--foreground);
+    font: inherit;
+    font-size: 1rem;
+  }
+
+  .enquiry-form textarea {
+    resize: vertical;
+  }
+  .message-field {
+    grid-column: 1 / -1;
+  }
+
+  .enquiry-form button {
+    width: fit-content;
+    min-height: 2.75rem;
+    padding-inline: 1rem;
+    border: 0;
+    border-radius: 0.2rem;
+    background: var(--sheet-accent);
+    color: var(--background);
+    font-weight: 600;
+  }
+
+  .sheet-tabs {
+    position: fixed;
+    z-index: 10;
+    inset: auto 0 0;
+    display: flex;
+    min-height: 3rem;
+    align-items: stretch;
+    gap: 0.1rem;
+    overflow-x: auto;
+    border-block-start: 1px solid var(--sheet-grid);
+    background: var(--sheet-chrome);
+    box-shadow: 0 -2px 8px oklch(0 0 0 / 0.06);
+    scrollbar-width: thin;
+  }
+
+  .sheet-tabs a {
+    display: inline-flex;
+    min-height: 2.75rem;
+    flex: none;
+    align-items: center;
+    padding-inline: 1rem;
+    border-inline-end: 1px solid var(--sheet-grid);
+    font-size: 0.8125rem;
+  }
+
+  .sheet-tabs .all-tab {
+    border-block-start: 2px solid var(--sheet-accent);
+    background: var(--background);
+    color: var(--sheet-accent-strong);
+    font-weight: 600;
+  }
+
+  @media (hover: hover) {
+    .menu-bar a:hover,
+    .sheet-tabs a:hover {
+      background: var(--muted);
+    }
+    .contact-button:hover,
+    .enquiry-form button:hover {
+      background: var(--sheet-accent-strong);
+    }
+  }
+
+  @media (max-width: 48rem) {
+    .menu-bar {
+      display: none;
+    }
+    .formula-bar {
+      grid-template-columns: 4rem 2.5rem 1fr;
+    }
+    .scroll-cue {
+      display: block;
+      margin: 0;
+      padding: 0.45rem 0.75rem;
+      background: var(--sheet-accent-soft);
+      color: var(--sheet-accent-strong);
+      font-size: 0.75rem;
+    }
+    .sheet-grid {
+      min-width: 55rem;
+    }
+    .enquiry-form {
+      grid-template-columns: 1fr;
+    }
+    .message-field {
+      grid-column: auto;
+    }
+  }
+
+  @media (forced-colors: active) {
+    :focus-visible {
+      outline-color: Highlight;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+  }
+</style>
