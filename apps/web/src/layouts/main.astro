@@ -3,14 +3,78 @@ import "@workspace/ui/globals.css"
 import "../styles/site.css"
 
 interface Props {
-  title?: string
-  description?: string
+  title: string
+  description: string
+  serviceType?: string
 }
 
 const {
-  title = "Basilpot | Web studio in Nepal",
-  description = "Basilpot builds in the web.",
+  title,
+  description,
+  serviceType,
 } = Astro.props
+
+const siteUrl = Astro.site ?? new URL("https://basilpot.com")
+const canonicalUrl = new URL(Astro.url.pathname, siteUrl)
+const imageUrl = new URL("/og-image.png", siteUrl)
+const organizationId = new URL("/#organization", siteUrl).href
+const websiteId = new URL("/#website", siteUrl).href
+const pageId = `${canonicalUrl.href}#webpage`
+const structuredData = {
+  "@context": "https://schema.org",
+  "@graph": [
+    ...(Astro.url.pathname === "/"
+      ? [
+          {
+            "@type": "Organization",
+            "@id": organizationId,
+            name: "Basilpot",
+            url: siteUrl.href,
+            logo: new URL("/basilpot-logo.svg", siteUrl).href,
+            image: imageUrl.href,
+            email: "seed@basilpot.com",
+            telephone: ["+9779841328947", "+9779805106358"],
+            address: {
+              "@type": "PostalAddress",
+              addressCountry: "NP",
+            },
+            areaServed: ["Nepal", "Worldwide"],
+          },
+          {
+            "@type": "WebSite",
+            "@id": websiteId,
+            url: siteUrl.href,
+            name: "Basilpot",
+            publisher: { "@id": organizationId },
+            inLanguage: "en",
+          },
+        ]
+      : []),
+    {
+      "@type": "WebPage",
+      "@id": pageId,
+      url: canonicalUrl.href,
+      name: title,
+      description,
+      isPartOf: { "@id": websiteId },
+      about: { "@id": organizationId },
+      inLanguage: "en",
+    },
+    ...(serviceType
+      ? [
+          {
+            "@type": "Service",
+            "@id": `${canonicalUrl.href}#service`,
+            name: serviceType,
+            description,
+            url: canonicalUrl.href,
+            provider: { "@id": organizationId },
+            areaServed: ["Nepal", "Worldwide"],
+          },
+        ]
+      : []),
+  ],
+}
 ---
 
 <html lang="en">
@@ -19,8 +83,24 @@ const {
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content={description} />
     <meta name="author" content="Basilpot" />
+    <meta
+      name="robots"
+      content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"
+    />
+    <link rel="canonical" href={canonicalUrl} />
     <meta property="og:type" content="website" />
-    <meta property="og:image" content="/og-image.png" />
+    <meta property="og:site_name" content="Basilpot" />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonicalUrl} />
+    <meta property="og:image" content={imageUrl} />
+    <meta property="og:image:alt" content="Basilpot web studio" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={imageUrl} />
+    <meta name="twitter:image:alt" content="Basilpot web studio" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -29,6 +109,7 @@ const {
     />
     <link rel="icon" type="image/png" href="/favicon.png" />
     <title>{title}</title>
+    <script type="application/ld+json" set:html={JSON.stringify(structuredData)} />
   </head>
   <body>
     <slot />
