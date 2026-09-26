@@ -52,8 +52,8 @@
 .home-products::before {
   position: absolute;
   inset-block-start: 0;
-  inset-inline-start: 10%;
-  width: 80%;
+  inset-inline-start: 8.3333%;
+  width: 83.3334%;
   border-top: 1px solid currentColor;
   content: "";
   opacity: 0.45;
@@ -93,8 +93,13 @@
 }
 
 .home-products a {
+  display: inline-flex;
+  min-height: 2.75rem;
+  align-items: center;
+  justify-content: center;
   color: inherit;
   font-size: 0.75rem;
+  text-align: center;
   text-underline-offset: 0.25em;
 }
 
