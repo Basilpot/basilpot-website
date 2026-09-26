@@ -28,4 +28,9 @@ export const products = [
     description: "Our ecommerce system for building custom online stores.",
     url: "https://ashandmoss.com/",
   },
+  {
+    name: "LINKS",
+    description: "A simple page for your links, with useful analytics.",
+    url: "https://links.basilpot.com/",
+  },
 ] as const
