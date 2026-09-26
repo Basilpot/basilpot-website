@@ -2,13 +2,13 @@ import type { APIRoute } from "astro"
 
 const paths = [
   "/",
-  "/about",
-  "/clients",
-  "/contact",
-  "/ecommerce",
-  "/media-and-marketing",
-  "/services",
-  "/travel",
+  "/about/",
+  "/clients/",
+  "/contact/",
+  "/ecommerce/",
+  "/media-and-marketing/",
+  "/services/",
+  "/travel/",
 ]
 
 export const GET: APIRoute = ({ site }) =>
