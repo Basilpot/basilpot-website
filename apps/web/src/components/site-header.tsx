@@ -34,3 +34,21 @@ export function SiteNavigation({ currentPath }: { currentPath?: string }) {
     </nav>
   )
 }
+
+export function SiteFooter({
+  currentPath,
+  className = "site-footer",
+}: {
+  currentPath?: string
+  className?: string
+}) {
+  return (
+    <footer className={className}>
+      <SiteNavigation currentPath={currentPath} />
+      <div className="footer-contact">
+        <p>© {new Date().getFullYear()} Basilpot</p>
+        <p>seed@basilpot.com</p>
+      </div>
+    </footer>
+  )
+}

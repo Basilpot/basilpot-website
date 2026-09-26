@@ -1,5 +1,5 @@
 ---
-import { SiteNavigation } from "../components/site-header"
+import { SiteFooter } from "../components/site-header"
 import MorphSlider from "../components/morph-slider"
 import { products } from "../data/products"
 import Main from "../layouts/main.astro"
@@ -64,13 +64,6 @@ const basilSlides = [
         </nav>
       </div>
     </main>
-    <footer class="home-footer">
-      <SiteNavigation currentPath="/" />
-      <div class="footer-contact">
-        <p>seed@basilpot.com</p>
-        <p>Web studio, Nepal</p>
-        <p>© {new Date().getFullYear()} Basilpot</p>
-      </div>
-    </footer>
+    <SiteFooter currentPath="/" className="home-footer" />
   </div>
 </Main>

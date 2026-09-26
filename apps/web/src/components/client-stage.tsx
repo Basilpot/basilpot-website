@@ -2,7 +2,7 @@ import { ArrowUpRight } from "lucide-react"
 import { useState } from "react"
 
 import { clients } from "../data/clients"
-import { SiteHeader, SiteNavigation } from "./site-header"
+import { SiteFooter, SiteHeader } from "./site-header"
 
 export function ClientStage() {
   const [activeClient, setActiveClient] = useState<number | null>(null)
@@ -118,14 +118,7 @@ export function ClientStage() {
           </ol>
         </div>
       </main>
-      <footer className="client-footer">
-        <SiteNavigation currentPath="/clients" />
-        <div className="footer-contact">
-          <p>seed@basilpot.com</p>
-          <p>Web studio, Nepal</p>
-          <p>© {new Date().getFullYear()} Basilpot</p>
-        </div>
-      </footer>
+      <SiteFooter currentPath="/clients" className="client-footer" />
     </div>
   )
 }

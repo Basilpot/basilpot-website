@@ -1,5 +1,5 @@
 ---
-import { SiteHeader, SiteNavigation } from "./site-header"
+import { SiteFooter, SiteHeader } from "./site-header"
 
 const pathname = Astro.url.pathname
 ---
@@ -10,12 +10,5 @@ const pathname = Astro.url.pathname
   <main id="main" tabindex="-1" class="document">
     <slot />
   </main>
-  <footer class="site-footer">
-    <SiteNavigation currentPath={pathname} />
-    <div class="footer-contact">
-      <p>seed@basilpot.com</p>
-      <p>Web studio, Nepal</p>
-      <p>© {new Date().getFullYear()} Basilpot</p>
-    </div>
-  </footer>
+  <SiteFooter currentPath={pathname} />
 </div>
