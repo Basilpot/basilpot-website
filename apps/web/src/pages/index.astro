@@ -1,5 +1,6 @@
 ---
 import { SiteHeader } from "../components/site-header"
+import { products } from "../data/products"
 import Main from "../layouts/main.astro"
 ---
 
@@ -11,7 +12,22 @@ import Main from "../layouts/main.astro"
     <a href="#main" class="skip-link">Skip to content</a>
     <SiteHeader currentPath="/" />
     <main id="main" tabindex="-1" class="home-only">
-      <h1 aria-label="Basilpot">BASILPOT</h1>
+      <div class="home-flow">
+        <h1 aria-label="Basilpot">BASILPOT</h1>
+        <nav aria-label="Products" class="home-products">
+          <ul>
+            {
+              products.map((product) => (
+                <li>
+                  <a href={product.url} target="_blank" rel="noreferrer">
+                    {product.name}
+                  </a>
+                </li>
+              ))
+            }
+          </ul>
+        </nav>
+      </div>
     </main>
   </div>
 </Main>
