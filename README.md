@@ -1,6 +1,6 @@
 # Basilpot
 
-Basilpot is a web design and development studio in Nepal. This repository contains the public Basilpot website, built with Astro and React.
+Basilpot is a global web design and development studio. This repository contains the public Basilpot website, built with Astro and React.
 
 The site explains Basilpot's services, shows client work, links to Basilpot products, and gives prospective clients a way to start a project.
 
@@ -61,16 +61,16 @@ The production build writes static files to `apps/web/dist`.
 
 ## Routes
 
-| Route | Purpose |
-| --- | --- |
-| `/` | Studio overview and product links |
-| `/services` | Website design, development, migration, maintenance, media, and marketing |
-| `/travel` | Travel website system and project pricing ranges |
-| `/ecommerce` | Custom ecommerce website development and Tasche |
-| `/clients` | Client portfolio |
-| `/media-and-marketing` | Selected brand work |
-| `/about` | Team and studio information |
-| `/contact` | Project enquiry form |
+| Route                  | Purpose                                                                   |
+| ---------------------- | ------------------------------------------------------------------------- |
+| `/`                    | Studio overview and product links                                         |
+| `/services`            | Website design, development, migration, maintenance, media, and marketing |
+| `/travel`              | Travel website system and project pricing ranges                          |
+| `/ecommerce`           | Custom ecommerce website development and Tasche                           |
+| `/clients`             | Client portfolio                                                          |
+| `/media-and-marketing` | Selected brand work                                                       |
+| `/about`               | Team and studio information                                               |
+| `/contact`             | Project enquiry form                                                      |
 
 `/work` redirects to `/clients`. `/travel/pricing` redirects to `/travel`.
 
@@ -79,6 +79,8 @@ The production build writes static files to `apps/web/dist`.
 `apps/web/src/layouts/main.astro` owns shared page metadata. Each page supplies a unique title and description. The layout emits canonical URLs, robots directives, Open Graph tags, Twitter cards, and JSON-LD.
 
 The homepage emits `Organization` and `WebSite` structured data. Service pages emit `Service` data. The site also publishes `/robots.txt` and `/sitemap.xml` from source routes.
+
+The current site is English-first. Add translated `/es/` or `/pt-br/` routes only with complete localized copy and reciprocal `hreflang` links.
 
 If the production domain changes, update `site` in `apps/web/astro.config.mjs` and the sitemap and canonical URLs will follow it.
 

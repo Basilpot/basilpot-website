@@ -8,11 +8,7 @@ interface Props {
   serviceType?: string
 }
 
-const {
-  title,
-  description,
-  serviceType,
-} = Astro.props
+const { title, description, serviceType } = Astro.props
 
 const siteUrl = Astro.site ?? new URL("https://basilpot.com")
 const canonicalUrl = new URL(Astro.url.pathname, siteUrl)
@@ -33,12 +29,7 @@ const structuredData = {
             logo: new URL("/basilpot-logo.svg", siteUrl).href,
             image: imageUrl.href,
             email: "seed@basilpot.com",
-            telephone: ["+9779841328947", "+9779805106358"],
-            address: {
-              "@type": "PostalAddress",
-              addressCountry: "NP",
-            },
-            areaServed: ["Nepal", "Worldwide"],
+            areaServed: ["Worldwide", "Latin America"],
           },
           {
             "@type": "WebSite",
@@ -69,7 +60,7 @@ const structuredData = {
             description,
             url: canonicalUrl.href,
             provider: { "@id": organizationId },
-            areaServed: ["Nepal", "Worldwide"],
+            areaServed: ["Worldwide", "Latin America"],
           },
         ]
       : []),
@@ -109,7 +100,10 @@ const structuredData = {
     />
     <link rel="icon" type="image/png" href="/favicon.png" />
     <title>{title}</title>
-    <script type="application/ld+json" set:html={JSON.stringify(structuredData)} />
+    <script
+      type="application/ld+json"
+      set:html={JSON.stringify(structuredData)}
+    />
   </head>
   <body>
     <slot />
