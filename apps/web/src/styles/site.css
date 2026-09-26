@@ -51,6 +51,14 @@
   text-align: center;
 }
 
+.home-intro {
+  max-width: 36rem;
+  margin: 1.5rem auto 0;
+  color: var(--muted-foreground);
+  line-height: 1.6;
+  text-wrap: balance;
+}
+
 .home-products {
   position: relative;
   margin-top: 2rem;
