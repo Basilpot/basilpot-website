@@ -1,11 +1,12 @@
 :root {
   --font-sans: "Manrope", ui-sans-serif, system-ui, sans-serif;
   --font-heading: "Instrument Sans", ui-sans-serif, system-ui, sans-serif;
-  --background: oklch(0.994 0.001 155);
-  --foreground: oklch(0.24 0.005 155);
-  --muted: oklch(0.956 0.003 155);
-  --muted-foreground: oklch(0.48 0.005 155);
-  --border: oklch(0.64 0.006 155);
+  --background: oklch(0 0 0);
+  --foreground: oklch(1 0 0);
+  --muted: oklch(0.16 0 0);
+  --muted-foreground: oklch(0.72 0 0);
+  --border: oklch(0.4 0 0);
+  --logo-filter: invert(1);
   --gutter: clamp(1.25rem, 3vw, 4rem);
   --reading-width: 42rem;
 }
@@ -193,7 +194,12 @@
   margin-top: 2rem;
 }
 .brand-mark {
-  max-width: 10rem;
+  width: 100%;
+  max-width: 31.25rem;
+  box-sizing: border-box;
+  padding: 1rem;
+  background: var(--foreground);
+  object-fit: contain;
 }
 .enquiry-form {
   display: grid;
@@ -235,32 +241,13 @@
   cursor: pointer;
 }
 .site-footer {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 3rem 2rem;
   width: min(100%, calc(var(--reading-width) + var(--gutter) * 2));
   margin-inline: auto;
   padding: 7rem var(--gutter) 3rem;
   font-size: 0.8125rem;
   line-height: 1.65;
 }
-.site-footer h2 {
-  margin-bottom: 1rem;
-  font-family: var(--font-sans);
-  font-size: inherit;
-  font-weight: 400;
-  color: var(--muted-foreground);
-}
-.site-footer a {
-  display: inline-flex;
-  align-items: center;
-  min-height: 2.75rem;
-}
-.site-footer a[aria-current="page"] {
-  text-decoration: underline;
-}
 .footer-contact {
-  grid-column: 1 / -1;
   color: var(--muted-foreground);
 }
 .footer-contact p {
@@ -309,52 +296,6 @@
   transition-property: background-color, color;
   transition-duration: 220ms;
   transition-timing-function: ease;
-}
-
-.client-theme-hex-healing-hub {
-  --client-background: oklch(0.47 0.15 319);
-}
-.client-theme-hope-fertility {
-  --client-background: oklch(0.67 0.16 47);
-  --client-ink: oklch(0.18 0.03 47);
-  --logo-filter: none;
-}
-.client-theme-sadp-nepal {
-  --client-background: oklch(0.61 0.18 145);
-  --client-ink: oklch(0.16 0.04 145);
-  --logo-filter: none;
-}
-.client-theme-walk-through-nepal {
-  --client-background: oklch(0.6037 0.1777 42.01);
-  --client-ink: oklch(0.17 0.03 42);
-  --logo-filter: none;
-}
-.client-theme-essence-treks-nepal {
-  --client-background: oklch(0.5731 0.2145 258.25);
-}
-.client-theme-into-nepal-treks {
-  --client-background: oklch(0.5526 0.139 246.57);
-}
-.client-theme-limestone-treks {
-  --client-background: oklch(0.6095 0.11 221.99);
-  --client-ink: oklch(0.16 0.03 222);
-  --logo-filter: none;
-}
-.client-theme-summit-luxury-treks {
-  --client-background: oklch(0.6698 0.1605 57.65);
-  --client-ink: oklch(0.18 0.03 58);
-  --logo-filter: none;
-}
-.client-theme-hi-nepal-treks {
-  --client-background: oklch(0.5296 0.1495 148.99);
-}
-.client-theme-lovely-trips-nepal {
-  --client-background: oklch(0.5796 0.061 116.04);
-  --client-ink: oklch(0.15 0.025 116);
-  --logo-filter: none;
-}
-.client-theme-tmh-adventure {
-  --client-background: oklch(0.4806 0.176 24.4);
 }
 
 .client-skip-link {

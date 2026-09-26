@@ -6,11 +6,9 @@ import { SiteHeader } from "./site-header"
 
 export function ClientStage() {
   const [activeClient, setActiveClient] = useState<number | null>(null)
-  const activeTheme =
-    activeClient === null ? "" : `client-theme-${clients[activeClient].theme}`
 
   return (
-    <div className={`client-stage ${activeTheme}`}>
+    <div className="client-stage">
       <a href="#client-work" className="client-skip-link">
         Skip to client work
       </a>

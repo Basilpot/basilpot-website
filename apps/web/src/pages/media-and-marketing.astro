@@ -3,28 +3,34 @@ import SiteShell from "../components/site-shell.astro"
 import Main from "../layouts/main.astro"
 
 const brands = [
-  { name: "Rancho Steak House" },
-  { name: "Maret Migration" },
-  { name: "Hope Fertility & IVF Centre" },
-  { name: "Unistar Education" },
-  { name: "Happy Face" },
-  { name: "C&C Advance Polyclinic and Cardiac Care" },
-  { name: "Nistha Education" },
-  { name: "Himalayan Nirvana Spa" },
-  { name: "Begnas Aqua Park Resort & Restaurant" },
-  { name: "Piri-Siri" },
+  { image: "/clients/rancho-steakhouse.webp", alt: "Rancho Steak House" },
+  { image: "/clients/1.png", alt: "Maret Migration" },
+  { image: "/clients/2.png", alt: "Hope Fertility & IVF Centre" },
+  { image: "/clients/3.png", alt: "Unistar Education" },
+  { image: "/clients/4.png", alt: "Happy Face" },
+  {
+    image: "/clients/6.png",
+    alt: "C&C Advance Polyclinic and Cardiac Care",
+  },
+  { image: "/clients/7.png", alt: "Nistha Education" },
+  { image: "/clients/8.png", alt: "Himalayan Nirvana Spa" },
+  {
+    image: "/clients/9.png",
+    alt: "Begnas Aqua Park Resort & Restaurant",
+  },
+  { image: "/clients/10.png", alt: "Piri-Siri" },
   { image: "/clients/11.png", alt: "Purple record and dove brand mark" },
-  { name: "Nirvana Restaurant & Bar" },
-  { name: "Infochip" },
-  { name: "Behaygraphy" },
-  { name: "Bobby Maret" },
-  { name: "Sorha Aana Homes" },
-  { name: "Rivet Engineering Services" },
-  { name: "Blonde Me Unisex Salon" },
-  { name: "Pinnacle Academy" },
-  { name: "Kunjana" },
+  { image: "/clients/12.png", alt: "Nirvana Restaurant & Bar" },
+  { image: "/clients/13.png", alt: "Infochip" },
+  { image: "/clients/14.png", alt: "Behaygraphy" },
+  { image: "/clients/15.png", alt: "Bobby Maret" },
+  { image: "/clients/16.png", alt: "Sorha Aana Homes" },
+  { image: "/clients/17.png", alt: "Rivet Engineering Services" },
+  { image: "/clients/18.png", alt: "Blonde Me Unisex Salon" },
+  { image: "/clients/19.png", alt: "Pinnacle Academy" },
+  { image: "/clients/20.png", alt: "Kunjana" },
   { image: "/clients/21.png", alt: "Red eight-spoked wheel brand mark" },
-  { name: "International Hotel Training Center" },
+  { image: "/clients/22.png", alt: "International Hotel Training Center" },
 ]
 ---
 
@@ -42,16 +48,14 @@ const brands = [
         {
           brands.map((brand) => (
             <li>
-              {brand.name ?? (
-                <img
-                  src={brand.image}
-                  alt={brand.alt}
-                  width="160"
-                  height="64"
-                  loading="lazy"
-                  class="brand-mark"
-                />
-              )}
+              <img
+                src={brand.image}
+                alt={brand.alt}
+                width="500"
+                height="200"
+                loading="lazy"
+                class="brand-mark"
+              />
             </li>
           ))
         }
