@@ -1,5 +1,6 @@
 ---
 import { products } from "../data/products"
+import { SiteHeader } from "./site-header"
 
 const links = [
   ["Clients", "/clients"],
@@ -16,11 +17,7 @@ const pathname = Astro.url.pathname
 
 <div class="site-shell">
   <a href="#main" class="skip-link">Skip to content</a>
-  <header class="document-header">
-    <a href="/" aria-label="Basilpot home" class="site-logo">
-      <img src="/basilpot-logo.svg" alt="" width="473" height="96" />
-    </a>
-  </header>
+  <SiteHeader currentPath={pathname} />
   <main id="main" tabindex="-1" class="document">
     <slot />
   </main>

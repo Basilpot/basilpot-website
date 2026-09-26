@@ -1,8 +1,8 @@
-import { ArrowUpRight, Menu } from "lucide-react"
+import { ArrowUpRight } from "lucide-react"
 import { useState } from "react"
 
 import { clients } from "../data/clients"
-import { products } from "../data/products"
+import { SiteHeader } from "./site-header"
 
 export function ClientStage() {
   const [activeClient, setActiveClient] = useState<number | null>(null)
@@ -14,41 +14,7 @@ export function ClientStage() {
       <a href="#client-work" className="client-skip-link">
         Skip to client work
       </a>
-      <header className="client-header">
-        <a href="/" aria-label="Basilpot home" className="client-logo">
-          <img src="/basilpot-logo.svg" alt="" width={473} height={96} />
-        </a>
-        <details className="client-menu">
-          <summary>
-            <Menu aria-hidden="true" size={24} strokeWidth={2} />
-            <span className="sr-only">Navigation menu</span>
-          </summary>
-          <nav
-            aria-label="Products and site navigation"
-            className="client-menu-panel"
-          >
-            <a href="/">Home</a>
-            <a href="/clients" aria-current="page">
-              Clients
-            </a>
-            {products.map((product) => (
-              <a
-                key={product.url}
-                href={product.url}
-                target="_blank"
-                rel="noreferrer"
-              >
-                {product.name}
-              </a>
-            ))}
-            <a href="/travel">Travel</a>
-            <a href="/ecommerce">Ecommerce</a>
-            <a href="/media-and-marketing">Media &amp; marketing</a>
-            <a href="/about">About</a>
-            <a href="/contact">Contact</a>
-          </nav>
-        </details>
-      </header>
+      <SiteHeader currentPath="/clients" />
 
       <main id="client-work" className="client-main">
         <h1 className="sr-only">Basilpot client work</h1>
