@@ -7,30 +7,37 @@ const sections = [
     title: "Build and manage trips",
     body: "Add trip facts, pricing, inclusions, FAQs and media in the dashboard. Published websites use that structured information across trip pages and the trip catalogue.",
     image: "/travel/dashboard.png",
-    alt: "TripEleven trip management dashboard",
+    alt: "Travel trip management dashboard",
     height: 953,
   },
   {
     title: "Write itineraries day by day",
     body: "Manage each day in a structured editor instead of one long text field. Days can include titles, descriptions and altitude information.",
     image: "/travel/itinerary.png",
-    alt: "TripEleven itinerary editor",
+    alt: "Travel itinerary editor",
     height: 934,
   },
   {
     title: "Organize the website",
     body: "Manage navigation, featured trips and the content people use to move around the public website without editing code.",
     image: "/travel/navigation.png",
-    alt: "TripEleven website navigation editor",
+    alt: "Travel website navigation editor",
     height: 937,
   },
   {
     title: "Publish content",
     body: "Write and publish blog posts and other useful travel content from the same system as the trip catalogue.",
     image: "/travel/content.png",
-    alt: "TripEleven content publishing screen",
+    alt: "Travel content publishing screen",
     height: 939,
   },
+]
+
+const ranges = [
+  ["Small travel operators", "NPR 60,000–100,000"],
+  ["Growing travel agencies", "NPR 100,000–175,000"],
+  ["Established travel companies", "NPR 175,000–300,000"],
+  ["Large agencies and travel brands", "From NPR 300,000"],
 ]
 ---
 
@@ -42,12 +49,10 @@ const sections = [
     <article>
       <h1>Travel</h1>
       <p>
-        TripEleven is a website and trip catalogue system for tour and trekking
-        companies.
-      </p>
-      <p>
-        We design the public website and provide the system behind it for
-        managing trips, itineraries, content and enquiries.
+        We build travel websites with a system for managing trips, itineraries,
+        content and enquiries. Each public website is designed around the travel
+        company while sharing reliable catalogue and publishing tools
+        underneath.
       </p>
       {
         sections.map((section) => (
@@ -100,22 +105,63 @@ const sections = [
           around the travel company and does not have to look like other
           websites using the same system.
         </p>
+        <p><a href="/clients">View client work</a>.</p>
+      </section>
+      <section>
+        <h2>Travel website pricing</h2>
+        <p>Project ranges, not rigid packages.</p>
         <p>
-          <a href="/clients">View client work</a> or <a
-            href="https://tripeleven.com/"
-            target="_blank"
-            rel="noreferrer">visit TripEleven</a
-          >.
+          Most travel websites fall into one of these ranges. We confirm a price
+          after reviewing the website, content and required system work.
+        </p>
+        <table>
+          <caption class="sr-only">Travel website project ranges</caption>
+          <thead
+            ><tr
+              ><th scope="col">Travel company</th><th scope="col"
+                >Project range</th
+              ></tr
+            ></thead
+          >
+          <tbody>
+            {
+              ranges.map(([name, price]) => (
+                <tr>
+                  <>
+                    <th scope="row">{name}</th>
+                    <td>{price}</td>
+                  </>
+                </tr>
+              ))
+            }
+          </tbody>
+        </table>
+      </section>
+      <section>
+        <h2>What affects pricing</h2>
+        <p>
+          Design scope, content migration, custom functionality, multilingual
+          requirements, booking systems, integrations, content entry, custom
+          admin workflows and SEO migration.
         </p>
       </section>
       <section>
-        <h2>Pricing</h2>
+        <h2>Trips are managed content</h2>
         <p>
-          Travel websites start from NPR 95,000. Larger websites, migrations,
-          multilingual systems, booking functionality and custom integrations
-          are quoted based on scope.
+          Number of trips alone does not necessarily determine development cost
+          because trips use the same CMS structure. Migrating or manually
+          entering large volumes of trips is separate work and is priced by
+          volume and source quality.
         </p>
-        <p><a href="/travel/pricing">Read travel pricing</a>.</p>
+      </section>
+      <section>
+        <h2>Starting a project</h2>
+        <p>
+          Send us your existing website, approximate trip count and any booking,
+          payment, migration or multilingual requirements. We will reply with
+          questions or a scoped range.
+        </p>
+        <p><a href="/contact">Discuss a travel website</a>.</p>
       </section>
     </article>
   </SiteShell>

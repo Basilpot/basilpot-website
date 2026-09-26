@@ -44,7 +44,6 @@ export function SiteHeader({ currentPath }: { currentPath?: string }) {
             </a>
           ))}
           {link("Travel", "/travel")}
-          {link("Travel pricing", "/travel/pricing")}
           {link("Ecommerce", "/ecommerce")}
           {link("Products", "/products")}
           {link("Media & marketing", "/media-and-marketing")}

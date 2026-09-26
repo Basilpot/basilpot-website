@@ -1,11 +1,5 @@
 export const products = [
   {
-    name: "TripEleven",
-    description:
-      "A website and trip catalogue system for tour and trekking companies.",
-    url: "https://tripeleven.com/",
-  },
-  {
     name: "TravelFast",
     description:
       "A marketplace for renting cars, vans, motorcycles, bikes and trucks in Nepal.",
