@@ -196,8 +196,8 @@
 .client-page-title {
   position: absolute;
   z-index: 2;
-  inset-block-start: 50%;
-  inset-inline-start: 0;
+  top: 50vh;
+  left: 0;
   margin: 0;
   font-size: 0.875rem;
   font-weight: 500;

@@ -1,9 +1,20 @@
 export const products = [
   {
+    name: "Launch Bunch",
+    description:
+      "An experimental directory for finding and reviewing businesses and services.",
+    url: "https://launchbunch.com/",
+  },
+  {
     name: "TravelFast",
     description:
       "A marketplace for renting cars, vans, motorcycles, bikes and trucks in Nepal.",
     url: "https://travelfast.app/",
+  },
+  {
+    name: "Tasche",
+    description: "Our ecommerce system for building custom online stores.",
+    url: "https://ashandmoss.com/",
   },
   {
     name: "Reviewpot",
@@ -16,17 +27,6 @@ export const products = [
     description:
       "A lightweight system for publishing content without a traditional CMS setup.",
     url: "https://fullbleed.basilpot.com/",
-  },
-  {
-    name: "Launch Bunch",
-    description:
-      "An experimental directory for finding and reviewing businesses and services.",
-    url: "https://launchbunch.com/",
-  },
-  {
-    name: "Tasche",
-    description: "Our ecommerce system for building custom online stores.",
-    url: "https://ashandmoss.com/",
   },
   {
     name: "LINKS",
