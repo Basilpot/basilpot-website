@@ -1,0 +1,94 @@
+---
+import SiteShell from "../components/site-shell.astro"
+import Main from "../layouts/main.astro"
+---
+
+<Main
+  title="Start a project | Basilpot"
+  description="Tell Basilpot about your website project."
+>
+  <SiteShell>
+    <article>
+      <h1>Contact</h1>
+      <p>
+        Tell us what needs building. This form opens the details in your email
+        app so you can review them before sending.
+      </p>
+      <form id="enquiry-form" class="enquiry-form">
+        <label class="form-field"
+          ><span>Name (required)</span><input
+            name="name"
+            autocomplete="name"
+            required
+          /></label
+        >
+        <label class="form-field"
+          ><span>Company</span><input
+            name="company"
+            autocomplete="organization"
+          /></label
+        >
+        <label class="form-field">
+          <span>Email (required)</span>
+          <input name="email" type="email" autocomplete="email" required />
+        </label>
+        <label class="form-field">
+          <span>Existing website</span>
+          <input name="website" type="url" autocomplete="url" />
+        </label>
+        <label class="form-field">
+          <span>What do you need? (required)</span>
+          <select name="project" required>
+            <option value="" selected disabled>Select a project type</option>
+            <option>Business website</option>
+            <option>Travel website</option>
+            <option>Ecommerce website</option>
+            <option>Website migration</option>
+            <option>Ongoing maintenance</option>
+          </select>
+        </label>
+        <label class="form-field">
+          <span>Approximate budget</span>
+          <input name="budget" placeholder="NPR 100,000–175,000" />
+        </label>
+        <label class="form-field">
+          <span>Preferred launch timeframe</span>
+          <input name="timeframe" placeholder="For example, March 2027" />
+        </label>
+        <label class="form-field">
+          <span>Message (required)</span>
+          <textarea
+            name="message"
+            rows="7"
+            required
+            placeholder="Describe the website, content, migration and any booking or payment requirements."
+          ></textarea>
+        </label>
+        <button type="submit" class="submit-button">Prepare email</button>
+      </form>
+    </article>
+  </SiteShell>
+
+  <script>
+    const form = document.querySelector<HTMLFormElement>("#enquiry-form")
+
+    form?.addEventListener("submit", (event) => {
+      event.preventDefault()
+      const data = new FormData(form)
+      const subject = `Project enquiry from ${data.get("name") || "website visitor"}`
+      const body = [
+        `Name: ${data.get("name")}`,
+        `Company: ${data.get("company")}`,
+        `Email: ${data.get("email")}`,
+        `Existing website: ${data.get("website")}`,
+        `Project: ${data.get("project")}`,
+        `Budget: ${data.get("budget")}`,
+        `Launch timeframe: ${data.get("timeframe")}`,
+        "",
+        String(data.get("message")),
+      ].join("\n")
+
+      window.location.href = `mailto:seed@basilpot.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`
+    })
+  </script>
+</Main>

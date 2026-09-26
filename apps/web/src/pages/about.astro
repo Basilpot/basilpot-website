@@ -1,0 +1,50 @@
+---
+import SiteShell from "../components/site-shell.astro"
+import Main from "../layouts/main.astro"
+
+const team = [
+  {
+    name: "Tej Kshetri",
+    role: "Technical Lead",
+    description:
+      "Tej works on web design, frontend and backend development, architecture, deployment, CMS and ecommerce systems.",
+    url: "https://kshetritej.com.np/",
+  },
+  {
+    name: "Aashish Khadka",
+    role: "Human Lead",
+    description:
+      "Aashish works on client relationships, SEO, search research, technical audits, on-page improvements and content structure.",
+    url: "https://aashishkhadka.com.np/",
+  },
+]
+---
+
+<Main
+  title="About | Basilpot"
+  description="Basilpot is a remote web studio based in Nepal."
+>
+  <SiteShell>
+    <article>
+      <h1>About</h1>
+      <p>Basilpot is a small remote web studio based in Nepal.</p>
+      <p>
+        We work across design, development and search, with each person focused
+        on the part of the work they know best.
+      </p>
+      {
+        team.map((person) => (
+          <section>
+            <h2>
+              <a href={person.url} target="_blank" rel="noreferrer">
+                {person.name}
+              </a>
+            </h2>
+            <p class="document-note">{person.role}</p>
+            <p>{person.description}</p>
+          </section>
+        ))
+      }
+    </article>
+  </SiteShell>
+</Main>

@@ -1,0 +1,29 @@
+---
+import SiteShell from "../components/site-shell.astro"
+import { products } from "../data/products"
+import Main from "../layouts/main.astro"
+---
+
+<Main
+  title="Products | Basilpot"
+  description="Web products built and maintained by Basilpot."
+>
+  <SiteShell>
+    <article>
+      <h1>Products</h1>
+      <p>We build a few web products of our own.</p>
+      {
+        products.map((product) => (
+          <section>
+            <h2>
+              <a href={product.url} target="_blank" rel="noreferrer">
+                {product.name}
+              </a>
+            </h2>
+            <p>{product.description}</p>
+          </section>
+        ))
+      }
+    </article>
+  </SiteShell>
+</Main>

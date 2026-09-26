@@ -1,0 +1,65 @@
+---
+import { products } from "../data/products"
+
+const links = [
+  ["Clients", "/clients"],
+  ["Travel", "/travel"],
+  ["Ecommerce", "/ecommerce"],
+  ["About", "/about"],
+  ["Products", "/products"],
+  ["Contact", "/contact"],
+  ["Media & marketing", "/media-and-marketing"],
+] as const
+
+const pathname = Astro.url.pathname
+---
+
+<div class="site-shell">
+  <a href="#main" class="skip-link">Skip to content</a>
+  <header class="document-header">
+    <a href="/" aria-label="Basilpot home" class="site-logo">
+      <img src="/basilpot-logo.svg" alt="" width="473" height="96" />
+    </a>
+  </header>
+  <main id="main" tabindex="-1" class="document">
+    <slot />
+  </main>
+  <footer class="site-footer">
+    <nav aria-label="Site index">
+      <h2>Explore</h2>
+      <ul>
+        {
+          links.map(([label, href]) => (
+            <li>
+              <a
+                href={href}
+                aria-current={pathname === href ? "page" : undefined}
+              >
+                {label}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+    <nav aria-label="Products">
+      <h2>Products</h2>
+      <ul>
+        {
+          products.map((product) => (
+            <li>
+              <a href={product.url} target="_blank" rel="noreferrer">
+                {product.name}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+    <div class="footer-contact">
+      <a href="mailto:seed@basilpot.com">seed@basilpot.com</a>
+      <p>Web studio, Nepal</p>
+      <p>© {new Date().getFullYear()} Basilpot</p>
+    </div>
+  </footer>
+</div>

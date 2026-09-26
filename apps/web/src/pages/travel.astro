@@ -1,0 +1,122 @@
+---
+import SiteShell from "../components/site-shell.astro"
+import Main from "../layouts/main.astro"
+
+const sections = [
+  {
+    title: "Build and manage trips",
+    body: "Add trip facts, pricing, inclusions, FAQs and media in the dashboard. Published websites use that structured information across trip pages and the trip catalogue.",
+    image: "/travel/dashboard.png",
+    alt: "TripEleven trip management dashboard",
+    height: 953,
+  },
+  {
+    title: "Write itineraries day by day",
+    body: "Manage each day in a structured editor instead of one long text field. Days can include titles, descriptions and altitude information.",
+    image: "/travel/itinerary.png",
+    alt: "TripEleven itinerary editor",
+    height: 934,
+  },
+  {
+    title: "Organize the website",
+    body: "Manage navigation, featured trips and the content people use to move around the public website without editing code.",
+    image: "/travel/navigation.png",
+    alt: "TripEleven website navigation editor",
+    height: 937,
+  },
+  {
+    title: "Publish content",
+    body: "Write and publish blog posts and other useful travel content from the same system as the trip catalogue.",
+    image: "/travel/content.png",
+    alt: "TripEleven content publishing screen",
+    height: 939,
+  },
+]
+---
+
+<Main
+  title="Travel websites | Basilpot"
+  description="Travel websites with a system for managing trips, itineraries, content and enquiries."
+>
+  <SiteShell>
+    <article>
+      <h1>Travel</h1>
+      <p>
+        TripEleven is a website and trip catalogue system for tour and trekking
+        companies.
+      </p>
+      <p>
+        We design the public website and provide the system behind it for
+        managing trips, itineraries, content and enquiries.
+      </p>
+      {
+        sections.map((section) => (
+          <section>
+            <h2>{section.title}</h2>
+            <p>{section.body}</p>
+            <figure>
+              <a
+                href={section.image}
+                target="_blank"
+                rel="noreferrer"
+                aria-label={`${section.alt} — open full-size image`}
+              >
+                <img
+                  src={section.image}
+                  alt={section.alt}
+                  width="1400"
+                  height={section.height}
+                  loading="lazy"
+                  decoding="async"
+                />
+              </a>
+              <figcaption>
+                {section.alt}. Open image to view full size.
+              </figcaption>
+            </figure>
+          </section>
+        ))
+      }
+      <section>
+        <h2>Collect enquiries</h2>
+        <p>
+          Each trip can have an enquiry form. Enquiries are stored in the
+          dashboard with the trip and contact information needed to respond.
+        </p>
+      </section>
+      <section>
+        <h2>Structure for search</h2>
+        <p>
+          Trips, destinations, activities and regions create many related pages.
+          We structure these relationships, URLs, metadata and internal links
+          deliberately. When an existing travel website is migrated, we can plan
+          redirects and preserve important URLs where appropriate.
+        </p>
+      </section>
+      <section>
+        <h2>Shared system, individual websites</h2>
+        <p>
+          The CMS is the underlying system. The public website is designed
+          around the travel company and does not have to look like other
+          websites using the same system.
+        </p>
+        <p>
+          <a href="/clients">View client work</a> or <a
+            href="https://tripeleven.com/"
+            target="_blank"
+            rel="noreferrer">visit TripEleven</a
+          >.
+        </p>
+      </section>
+      <section>
+        <h2>Pricing</h2>
+        <p>
+          Travel websites start from NPR 95,000. Larger websites, migrations,
+          multilingual systems, booking functionality and custom integrations
+          are quoted based on scope.
+        </p>
+        <p><a href="/travel/pricing">Read travel pricing</a>.</p>
+      </section>
+    </article>
+  </SiteShell>
+</Main>

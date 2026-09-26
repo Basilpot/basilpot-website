@@ -1,0 +1,307 @@
+:root {
+  --font-sans: "Manrope", ui-sans-serif, system-ui, sans-serif;
+  --font-heading: "Instrument Sans", ui-sans-serif, system-ui, sans-serif;
+  --background: oklch(0.994 0.001 155);
+  --foreground: oklch(0.24 0.005 155);
+  --muted: oklch(0.956 0.003 155);
+  --muted-foreground: oklch(0.48 0.005 155);
+  --border: oklch(0.64 0.006 155);
+  --identity-background: oklch(0.255 0.042 160);
+  --identity-foreground: oklch(0.96 0.008 155);
+  --gutter: clamp(1.25rem, 3vw, 4rem);
+  --reading-width: 42rem;
+}
+
+.home-only {
+  display: flex;
+  min-height: 100svh;
+  align-items: end;
+  overflow: hidden;
+  padding: 5rem var(--gutter);
+  background: var(--identity-background);
+  color: var(--identity-foreground);
+}
+
+.home-only h1 {
+  width: 100%;
+  margin: 0;
+  font-size: 17.2vw;
+  font-weight: 500;
+  line-height: 0.78;
+  letter-spacing: -0.052em;
+  white-space: nowrap;
+}
+
+.home-only ::selection {
+  background: var(--identity-foreground);
+  color: var(--identity-background);
+}
+
+@layer base {
+  html {
+    font-size: 100%;
+    scroll-padding-block: 2rem;
+  }
+  body {
+    margin: 0;
+    background: var(--background);
+    color: var(--foreground);
+    font-family: var(--font-sans);
+    font-weight: 400;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  h1,
+  h2,
+  h3 {
+    font-family: var(--font-heading);
+    font-weight: 500;
+    text-wrap: balance;
+  }
+  img {
+    display: block;
+    max-width: 100%;
+    height: auto;
+  }
+  a {
+    text-decoration-thickness: from-font;
+    text-underline-offset: 0.25em;
+  }
+  :focus-visible {
+    outline: 2px solid currentColor;
+    outline-offset: 5px;
+  }
+  ::selection {
+    background: var(--foreground);
+    color: var(--background);
+  }
+  @media (hover: hover) {
+    a:hover {
+      text-decoration: underline;
+    }
+  }
+}
+
+.site-shell {
+  min-height: 100svh;
+}
+.skip-link {
+  position: fixed;
+  top: 1rem;
+  left: 1rem;
+  z-index: 100;
+  translate: 0 -200%;
+  padding: 0.75rem 1rem;
+  color: var(--background);
+  background: var(--foreground);
+}
+.skip-link:focus {
+  translate: 0;
+}
+.site-logo {
+  display: inline-flex;
+  width: 7rem;
+  min-height: 2.75rem;
+  align-items: center;
+}
+.site-logo img {
+  width: 100%;
+}
+.document-header {
+  display: flex;
+  justify-content: center;
+  padding: 3rem var(--gutter) 0;
+}
+.document {
+  width: min(100%, calc(var(--reading-width) + var(--gutter) * 2));
+  margin-inline: auto;
+  padding: 4rem var(--gutter) 0;
+  font-size: 1rem;
+  line-height: 1.85;
+  overflow-wrap: break-word;
+}
+.document h1 {
+  margin: 0 0 3rem;
+  font-size: clamp(2rem, 4vw, 2.75rem);
+  line-height: 1.18;
+  letter-spacing: -0.035em;
+  text-align: center;
+}
+.document h2 {
+  margin-bottom: 0.875rem;
+  font-size: 1.375rem;
+  line-height: 1.4;
+  letter-spacing: -0.02em;
+}
+.document h3 {
+  margin-bottom: 0.75rem;
+  font-size: 1.125rem;
+  line-height: 1.4;
+}
+.document p + p {
+  margin-top: 1.25rem;
+}
+.document section {
+  margin-top: 3rem;
+}
+.document a {
+  text-decoration: underline;
+}
+.document p {
+  text-wrap: pretty;
+}
+.document-note {
+  color: var(--muted-foreground);
+  font-size: 0.875rem;
+}
+.document p.document-note {
+  margin-top: 0.5rem;
+}
+.document figure {
+  margin-block: 2rem;
+}
+.document figure img {
+  width: 100%;
+}
+.document figcaption {
+  margin-top: 0.875rem;
+  color: var(--muted-foreground);
+  font-size: 0.75rem;
+  line-height: 1.65;
+}
+.document table {
+  width: 100%;
+  margin-block: 2.5rem;
+  border-collapse: collapse;
+  font-size: 0.9375rem;
+  line-height: 1.65;
+}
+.document table caption {
+  text-align: start;
+  margin-bottom: 1rem;
+}
+.document th,
+.document td {
+  padding-block: 0.75rem;
+  text-align: start;
+  vertical-align: top;
+}
+.document th {
+  padding-inline-end: 1.5rem;
+  font-weight: 500;
+}
+.document td {
+  font-variant-numeric: tabular-nums;
+}
+.document-index {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.document-index li {
+  margin-top: 2rem;
+}
+.brand-mark {
+  max-width: 10rem;
+}
+.enquiry-form {
+  display: grid;
+  gap: 1.5rem;
+  margin-top: 2.5rem;
+}
+.form-field {
+  display: grid;
+  gap: 0.5rem;
+  font-size: 0.875rem;
+}
+.form-field input,
+.form-field select,
+.form-field textarea {
+  width: 100%;
+  min-height: 2.75rem;
+  padding: 0.75rem;
+  border: 1px solid var(--border);
+  border-radius: 0;
+  color: var(--foreground);
+  background: var(--background);
+  font: inherit;
+  font-size: 1rem;
+}
+.form-field textarea {
+  resize: vertical;
+}
+.form-field input::placeholder,
+.form-field textarea::placeholder {
+  color: var(--muted-foreground);
+}
+.submit-button {
+  width: fit-content;
+  min-height: 2.75rem;
+  padding: 0.75rem 1.25rem;
+  background: var(--foreground);
+  color: var(--background);
+  font-size: 0.875rem;
+  cursor: pointer;
+}
+.site-footer {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3rem 2rem;
+  width: min(100%, calc(var(--reading-width) + var(--gutter) * 2));
+  margin-inline: auto;
+  padding: 7rem var(--gutter) 3rem;
+  font-size: 0.8125rem;
+  line-height: 1.65;
+}
+.site-footer h2 {
+  margin-bottom: 1rem;
+  font-family: var(--font-sans);
+  font-size: inherit;
+  font-weight: 400;
+  color: var(--muted-foreground);
+}
+.site-footer a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 2.75rem;
+}
+.site-footer a[aria-current="page"] {
+  text-decoration: underline;
+}
+.footer-contact {
+  grid-column: 1 / -1;
+  color: var(--muted-foreground);
+}
+.footer-contact p {
+  margin-top: 0.5rem;
+}
+
+@media (min-width: 48rem) {
+  .document p:not(.document-note) {
+    text-align: justify;
+    hyphens: auto;
+    text-wrap: wrap;
+  }
+}
+@media (max-width: 36rem) {
+  .document-header {
+    padding-top: 2rem;
+  }
+  .document {
+    padding-top: 3rem;
+  }
+  .site-footer {
+    padding-top: 5rem;
+  }
+  .document table {
+    font-size: 0.875rem;
+  }
+  .document th {
+    padding-inline-end: 1rem;
+  }
+}
+@media (forced-colors: active) {
+  :focus-visible {
+    outline-color: Highlight;
+  }
+}

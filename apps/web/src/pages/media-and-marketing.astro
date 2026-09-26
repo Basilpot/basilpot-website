@@ -1,0 +1,61 @@
+---
+import SiteShell from "../components/site-shell.astro"
+import Main from "../layouts/main.astro"
+
+const brands = [
+  { name: "Rancho Steak House" },
+  { name: "Maret Migration" },
+  { name: "Hope Fertility & IVF Centre" },
+  { name: "Unistar Education" },
+  { name: "Happy Face" },
+  { name: "C&C Advance Polyclinic and Cardiac Care" },
+  { name: "Nistha Education" },
+  { name: "Himalayan Nirvana Spa" },
+  { name: "Begnas Aqua Park Resort & Restaurant" },
+  { name: "Piri-Siri" },
+  { image: "/clients/11.png", alt: "Purple record and dove brand mark" },
+  { name: "Nirvana Restaurant & Bar" },
+  { name: "Infochip" },
+  { name: "Behaygraphy" },
+  { name: "Bobby Maret" },
+  { name: "Sorha Aana Homes" },
+  { name: "Rivet Engineering Services" },
+  { name: "Blonde Me Unisex Salon" },
+  { name: "Pinnacle Academy" },
+  { name: "Kunjana" },
+  { image: "/clients/21.png", alt: "Red eight-spoked wheel brand mark" },
+  { name: "International Hotel Training Center" },
+]
+---
+
+<Main
+  title="Media and marketing | Basilpot"
+  description="Media and marketing work by Basilpot."
+>
+  <SiteShell>
+    <article>
+      <h1>Media and marketing</h1>
+      <p>
+        Selected brands we’ve supported through digital media and marketing.
+      </p>
+      <ul class="document-index">
+        {
+          brands.map((brand) => (
+            <li>
+              {brand.name ?? (
+                <img
+                  src={brand.image}
+                  alt={brand.alt}
+                  width="160"
+                  height="64"
+                  loading="lazy"
+                  class="brand-mark"
+                />
+              )}
+            </li>
+          ))
+        }
+      </ul>
+    </article>
+  </SiteShell>
+</Main>
