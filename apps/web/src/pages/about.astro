@@ -5,17 +5,15 @@ import Main from "../layouts/main.astro"
 const team = [
   {
     name: "Tej Kshetri",
-    role: "Technical Lead",
+    role: "Tech Lead",
     description:
-      "Tej works on web design, frontend and backend development, architecture, deployment, CMS and ecommerce systems.",
-    url: "https://kshetritej.com.np/",
+      "Tej leads the technical direction of Basilpot and the products we build. He works across product engineering, architecture, infrastructure, and design implementation, while helping shape how ideas become reliable, useful software. He keeps our technical decisions practical, our systems maintainable, and our products focused on solving the problem rather than showing off the technology.",
   },
   {
     name: "Aashish Khadka",
     role: "Human Lead",
     description:
-      "Aashish works on client relationships, SEO, search research, technical audits, on-page improvements and content structure.",
-    url: "https://aashishkhadka.com.np/",
+      "Aashish leads the people-facing side of Basilpot, from client relationships and communication to partnerships and day-to-day operations. He helps connect the people building our products with the people using them, making sure decisions aren't made inside a technical bubble. His focus is keeping our work grounded in actual people, actual businesses, and actual problems.",
   },
 ]
 ---
@@ -27,24 +25,21 @@ const team = [
   <SiteShell>
     <article>
       <h1>About</h1>
-      <p>Basilpot is a small remote web studio based in Nepal.</p>
-      <p>
-        We work across design, development and search, with each person focused
-        on the part of the work they know best.
-      </p>
       {
         team.map((person) => (
           <section>
-            <h2>
-              <a href={person.url} target="_blank" rel="noreferrer">
-                {person.name}
-              </a>
-            </h2>
+            <h2>{person.name}</h2>
             <p class="document-note">{person.role}</p>
             <p>{person.description}</p>
           </section>
         ))
       }
+      <p>
+        For project inquiries or consultation, contact <a
+          href="tel:+9779841328947">+9779841328947 (Tej)</a
+        > or <a href="tel:+9779805106358">+9779805106358 (Aashish)</a> or send your
+        inquiries to <a href="mailto:seed@basilpot.com">seed@basilpot.com</a>.
+      </p>
     </article>
   </SiteShell>
 </Main>
