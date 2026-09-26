@@ -187,17 +187,26 @@
 .document {
   width: min(100%, calc(var(--reading-width) + var(--gutter) * 2));
   margin-inline: auto;
-  padding: 4rem var(--gutter) 0;
+  padding: 4rem var(--gutter) 0 calc(var(--gutter) + 2rem);
   font-size: 1rem;
   line-height: 1.85;
   overflow-wrap: break-word;
 }
-.document h1 {
-  margin: 0 0 3rem;
-  font-size: clamp(2rem, 4vw, 2.75rem);
-  line-height: 1.18;
-  letter-spacing: -0.035em;
-  text-align: center;
+.document h1,
+.client-page-title {
+  position: fixed;
+  z-index: 2;
+  inset-block-start: 50%;
+  inset-inline-start: 1rem;
+  margin: 0;
+  font-size: 0.875rem;
+  font-weight: 500;
+  line-height: 1;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  writing-mode: vertical-rl;
+  transform: translateY(-50%) rotate(180deg);
 }
 .document h2 {
   margin-bottom: 0.875rem;
@@ -361,6 +370,7 @@
 .footer-contact {
   margin-top: 2rem;
   color: var(--muted-foreground);
+  text-align: center;
 }
 .footer-contact p {
   margin-top: 0.5rem;
@@ -489,7 +499,7 @@
   display: flex;
   flex: 1;
   align-items: center;
-  padding: 4rem 1.25rem 5rem;
+  padding: 4rem 1.25rem 5rem 3.25rem;
 }
 
 .client-content {

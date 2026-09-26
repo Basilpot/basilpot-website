@@ -17,7 +17,7 @@ export function ClientStage() {
 
       <main id="client-work" className="client-main">
         <div className="client-content">
-          <h1 className="sr-only">Basilpot client work</h1>
+          <h1 className="client-page-title">Clients</h1>
           <ol className="client-list">
             {clients.map((client, index) => {
               const active = activeClient === index
@@ -120,6 +120,11 @@ export function ClientStage() {
       </main>
       <footer className="client-footer">
         <SiteNavigation currentPath="/clients" />
+        <div className="footer-contact">
+          <p>seed@basilpot.com</p>
+          <p>Web studio, Nepal</p>
+          <p>© {new Date().getFullYear()} Basilpot</p>
+        </div>
       </footer>
     </div>
   )
