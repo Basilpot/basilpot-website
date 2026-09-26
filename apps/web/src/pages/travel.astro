@@ -6,30 +6,18 @@ const sections = [
   {
     title: "Build and manage trips",
     body: "Add trip facts, pricing, inclusions, FAQs and media in the dashboard. Published websites use that structured information across trip pages and the trip catalogue.",
-    image: "/travel/dashboard.png",
-    alt: "Travel trip management dashboard",
-    height: 953,
   },
   {
     title: "Write itineraries day by day",
     body: "Manage each day in a structured editor instead of one long text field. Days can include titles, descriptions and altitude information.",
-    image: "/travel/itinerary.png",
-    alt: "Travel itinerary editor",
-    height: 934,
   },
   {
     title: "Organize the website",
     body: "Manage navigation, featured trips and the content people use to move around the public website without editing code.",
-    image: "/travel/navigation.png",
-    alt: "Travel website navigation editor",
-    height: 937,
   },
   {
     title: "Publish content",
     body: "Write and publish blog posts and other useful travel content from the same system as the trip catalogue.",
-    image: "/travel/content.png",
-    alt: "Travel content publishing screen",
-    height: 939,
   },
 ]
 
@@ -59,26 +47,6 @@ const ranges = [
           <section>
             <h2>{section.title}</h2>
             <p>{section.body}</p>
-            <figure>
-              <a
-                href={section.image}
-                target="_blank"
-                rel="noreferrer"
-                aria-label={`${section.alt} — open full-size image`}
-              >
-                <img
-                  src={section.image}
-                  alt={section.alt}
-                  width="1400"
-                  height={section.height}
-                  loading="lazy"
-                  decoding="async"
-                />
-              </a>
-              <figcaption>
-                {section.alt}. Open image to view full size.
-              </figcaption>
-            </figure>
           </section>
         ))
       }
