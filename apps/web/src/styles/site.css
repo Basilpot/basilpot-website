@@ -544,6 +544,11 @@
   font-size: 1.55rem;
   font-weight: 700;
   line-height: 1.18;
+  list-style: none;
+}
+
+.client-trigger::-webkit-details-marker {
+  display: none;
 }
 
 .client-trigger:focus-visible {
@@ -563,8 +568,8 @@
   transition: opacity 150ms ease;
 }
 
-.client-trigger:is(:focus-visible, .is-active)
-  :is(.client-number, .client-name) {
+.client-trigger:focus-visible :is(.client-number, .client-name),
+.client-entry[open] .client-trigger :is(.client-number, .client-name) {
   opacity: 1;
 }
 
