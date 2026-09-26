@@ -1,4 +1,4 @@
-import { ArrowUpRight } from "lucide-react"
+import { ArrowUpRight, Menu } from "lucide-react"
 import { useState } from "react"
 
 import { clients } from "../data/clients"
@@ -15,25 +15,39 @@ export function ClientStage() {
         Skip to client work
       </a>
       <header className="client-header">
-        <nav aria-label="Products and site navigation" className="client-nav">
-          <a href="/">Basilpot</a>
-          {products.map((product) => (
-            <a
-              key={product.url}
-              href={product.url}
-              target="_blank"
-              rel="noreferrer"
-            >
-              {product.name}
-            </a>
-          ))}
-          <a href="/media-and-marketing">Media</a>
-          <a href="/about">About</a>
-          <a href="/contact">Contact</a>
-        </nav>
         <a href="/" aria-label="Basilpot home" className="client-logo">
           <img src="/basilpot-logo.svg" alt="" width={473} height={96} />
         </a>
+        <details className="client-menu">
+          <summary>
+            <Menu aria-hidden="true" size={24} strokeWidth={2} />
+            <span className="sr-only">Navigation menu</span>
+          </summary>
+          <nav
+            aria-label="Products and site navigation"
+            className="client-menu-panel"
+          >
+            <a href="/">Home</a>
+            <a href="/clients" aria-current="page">
+              Clients
+            </a>
+            {products.map((product) => (
+              <a
+                key={product.url}
+                href={product.url}
+                target="_blank"
+                rel="noreferrer"
+              >
+                {product.name}
+              </a>
+            ))}
+            <a href="/travel">Travel</a>
+            <a href="/ecommerce">Ecommerce</a>
+            <a href="/media-and-marketing">Media &amp; marketing</a>
+            <a href="/about">About</a>
+            <a href="/contact">Contact</a>
+          </nav>
+        </details>
       </header>
 
       <main id="client-work" className="client-main">
