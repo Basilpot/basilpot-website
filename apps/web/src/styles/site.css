@@ -13,11 +13,25 @@
 
 .home-stage {
   --logo-filter: invert(1);
+  position: relative;
   display: flex;
   min-height: 100svh;
   flex-direction: column;
+  overflow: hidden;
   background: oklch(0 0 0);
   color: oklch(1 0 0);
+}
+
+.home-background {
+  position: absolute;
+  z-index: 0;
+  inset: 0;
+  pointer-events: none;
+}
+
+.home-stage > :not(.home-background) {
+  position: relative;
+  z-index: 1;
 }
 
 .home-only {
