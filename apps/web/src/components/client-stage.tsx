@@ -6,7 +6,6 @@ import { SiteFooter, SiteHeader } from "./site-header"
 
 export function ClientStage() {
   const [activeClient, setActiveClient] = useState<number | null>(null)
-  const [noteOpen, setNoteOpen] = useState(false)
 
   return (
     <div className="client-stage">
@@ -27,7 +26,6 @@ export function ClientStage() {
                   <button
                     type="button"
                     onClick={() => {
-                      setNoteOpen(false)
                       setActiveClient(index)
                     }}
                     aria-expanded={active}
@@ -76,45 +74,6 @@ export function ClientStage() {
                 </li>
               )
             })}
-            <li className="client-entry">
-              <button
-                type="button"
-                onClick={() => {
-                  setActiveClient(null)
-                  setNoteOpen((open) => !open)
-                }}
-                aria-expanded={noteOpen}
-                aria-controls="client-inspiration-note"
-                className={`client-trigger ${noteOpen ? "is-active" : ""}`}
-              >
-                <span className="client-number">
-                  {String(clients.length + 1).padStart(2, "0")}.
-                </span>
-                <span className="client-name">A note on inspiration</span>
-              </button>
-              {noteOpen && (
-                <div id="client-inspiration-note" className="client-detail">
-                  <p>
-                    We owe a nod to{" "}
-                    <a
-                      href="http://37signals.com/"
-                      target="_blank"
-                      rel="noreferrer"
-                    >
-                      37signals
-                    </a>
-                    . This site takes clear inspiration from their design, and
-                    Basilpot shares an appreciation for many of their ideas
-                    about staying small, working deliberately, and building
-                    sustainable products.
-                  </p>
-                  <p>
-                    We’re not affiliated with 37signals — we just like how they
-                    think.
-                  </p>
-                </div>
-              )}
-            </li>
           </ol>
         </div>
       </main>

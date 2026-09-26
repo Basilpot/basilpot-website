@@ -22,14 +22,7 @@
   color: oklch(1 0 0);
 }
 
-.home-background {
-  position: absolute;
-  z-index: 0;
-  inset: 0;
-  pointer-events: none;
-}
-
-.home-stage > :not(.home-background) {
+.home-stage > * {
   position: relative;
   z-index: 1;
 }
