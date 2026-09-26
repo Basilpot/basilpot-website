@@ -187,27 +187,27 @@
 .document {
   width: min(100%, calc(var(--reading-width) + var(--gutter) * 2));
   margin-inline: auto;
-  padding: 4rem var(--gutter) 0 calc(var(--gutter) + 2rem);
+  padding: 4rem var(--gutter) 0;
   font-size: 1rem;
   line-height: 1.85;
   overflow-wrap: break-word;
 }
 .document h1,
 .client-page-title {
-  position: absolute;
-  z-index: 2;
-  top: 50vh;
-  left: 0;
-  margin: 0;
+  position: static;
+  margin: 0 0 3rem;
   font-size: 0.875rem;
   font-weight: 500;
-  line-height: 1;
+  line-height: 1.2;
   letter-spacing: 0.08em;
+  text-align: start;
   text-transform: uppercase;
-  white-space: nowrap;
-  writing-mode: vertical-rl;
-  transform: translateY(-50%) rotate(180deg);
-  pointer-events: none;
+}
+
+.document h1::before,
+.client-page-title::before {
+  color: var(--muted-foreground);
+  content: "Basilpot / ";
 }
 .document h2 {
   margin-bottom: 0.875rem;
@@ -510,7 +510,7 @@
   display: flex;
   flex: 1;
   align-items: center;
-  padding: 4rem 1.25rem 5rem 3.25rem;
+  padding: 4rem 1.25rem 5rem;
 }
 
 .client-content {

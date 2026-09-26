@@ -1,13 +1,66 @@
 ---
 import { SiteFooter, SiteHeader } from "./site-header"
+import LineSidebar from "./line-sidebar"
 
 const pathname = Astro.url.pathname
+const toc =
+  {
+    "/about": ["About", "Tej Kshetri", "Aashish Khadka"],
+    "/contact": ["Contact"],
+    "/ecommerce": [
+      "Ecommerce",
+      "Products and collections",
+      "Store content",
+      "Storefront design",
+      "Ash & Moss",
+    ],
+    "/media-and-marketing": ["Media and marketing"],
+    "/services": [
+      "Services",
+      "Business websites",
+      "Travel websites",
+      "Ecommerce websites",
+      "Website migration",
+      "Maintenance",
+      "Media and marketing",
+      "Start a project",
+    ],
+    "/travel": [
+      "Travel",
+      "Build and manage trips",
+      "Write itineraries day by day",
+      "Organize the website",
+      "Publish content",
+      "Collect enquiries",
+      "Structure for search",
+      "Shared system, individual websites",
+      "Travel website pricing",
+      "What affects pricing",
+      "Trips are managed content",
+      "Starting a project",
+    ],
+  }[pathname.replace(/\/$/, "")] ?? []
 ---
 
 <div class="site-shell">
   <a href="#main" class="skip-link">Skip to content</a>
   <SiteHeader />
   <main id="main" tabindex="-1" class="document">
+    {
+      toc.length > 0 && (
+        <LineSidebar
+          client:load
+          items={toc}
+          accentColor="#ffffff"
+          textColor="#777777"
+          markerColor="#444444"
+          fontSize={0.7}
+          markerLength={32}
+          maxShift={12}
+          itemGap={12}
+        />
+      )
+    }
     <slot />
   </main>
   <SiteFooter currentPath={pathname} />
