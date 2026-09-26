@@ -116,13 +116,6 @@ export function ClientStage() {
               )}
             </li>
           </ol>
-          <section className="client-context">
-            <p>Basilpot designs and builds websites.</p>
-            <p>
-              We build custom business websites, travel websites and ecommerce
-              stores. We also make and maintain a few web products of our own.
-            </p>
-          </section>
         </div>
       </main>
     </div>
