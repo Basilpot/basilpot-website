@@ -369,12 +369,22 @@
   justify-content: center;
 }
 .footer-contact {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem 1rem;
   margin-top: 2rem;
   color: var(--muted-foreground);
   text-align: center;
 }
 .footer-contact p {
-  margin-top: 0.5rem;
+  margin: 0;
+}
+.footer-contact p + p::before {
+  margin-inline-end: 1rem;
+  color: var(--border);
+  content: "|";
 }
 
 @media (min-width: 48rem) {
