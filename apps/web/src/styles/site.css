@@ -425,10 +425,13 @@
   padding: 4rem 1.25rem 5rem;
 }
 
-.client-list {
+.client-content {
   width: 100%;
   max-width: 48rem;
   margin-inline: auto;
+}
+
+.client-list {
   padding: 0;
   list-style: none;
 }
@@ -490,6 +493,10 @@
   text-wrap: pretty;
 }
 
+.client-detail > p + p {
+  margin-top: 1rem;
+}
+
 .client-credit {
   margin-bottom: 0.5rem;
   font-size: 0.75rem;
@@ -505,6 +512,18 @@
   margin-top: 0.65rem;
   font-size: 0.95rem;
   font-weight: 700;
+}
+
+.client-context {
+  max-width: 42rem;
+  margin-top: 5rem;
+  color: var(--muted-foreground);
+  font-size: 0.9375rem;
+  line-height: 1.7;
+}
+
+.client-context p + p {
+  margin-top: 1.25rem;
 }
 
 @keyframes client-reveal {
