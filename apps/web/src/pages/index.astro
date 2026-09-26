@@ -1,5 +1,5 @@
 ---
-import { SiteHeader } from "../components/site-header"
+import { SiteNavigation } from "../components/site-header"
 import { products } from "../data/products"
 import Main from "../layouts/main.astro"
 ---
@@ -10,10 +10,12 @@ import Main from "../layouts/main.astro"
 >
   <div class="home-stage">
     <a href="#main" class="skip-link">Skip to content</a>
-    <SiteHeader currentPath="/" />
     <main id="main" tabindex="-1" class="home-only">
       <div class="home-flow">
-        <h1 aria-label="Basilpot">BASILPOT</h1>
+        <h1>
+          <span class="sr-only">Basilpot</span>
+          <img src="/basilpot-logo.svg" alt="" width="473" height="96" />
+        </h1>
         <nav aria-label="Products" class="home-products">
           <ul>
             {
@@ -29,5 +31,8 @@ import Main from "../layouts/main.astro"
         </nav>
       </div>
     </main>
+    <footer class="home-footer">
+      <SiteNavigation currentPath="/" />
+    </footer>
   </div>
 </Main>

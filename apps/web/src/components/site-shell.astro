@@ -1,16 +1,17 @@
 ---
-import { SiteHeader } from "./site-header"
+import { SiteHeader, SiteNavigation } from "./site-header"
 
 const pathname = Astro.url.pathname
 ---
 
 <div class="site-shell">
   <a href="#main" class="skip-link">Skip to content</a>
-  <SiteHeader currentPath={pathname} />
+  <SiteHeader />
   <main id="main" tabindex="-1" class="document">
     <slot />
   </main>
   <footer class="site-footer">
+    <SiteNavigation currentPath={pathname} />
     <div class="footer-contact">
       <p>seed@basilpot.com</p>
       <p>Web studio, Nepal</p>

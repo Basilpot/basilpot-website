@@ -2,7 +2,7 @@ import { ArrowUpRight } from "lucide-react"
 import { useState } from "react"
 
 import { clients } from "../data/clients"
-import { SiteHeader } from "./site-header"
+import { SiteHeader, SiteNavigation } from "./site-header"
 
 export function ClientStage() {
   const [activeClient, setActiveClient] = useState<number | null>(null)
@@ -13,7 +13,7 @@ export function ClientStage() {
       <a href="#client-work" className="client-skip-link">
         Skip to client work
       </a>
-      <SiteHeader currentPath="/clients" />
+      <SiteHeader />
 
       <main id="client-work" className="client-main">
         <div className="client-content">
@@ -118,6 +118,9 @@ export function ClientStage() {
           </ol>
         </div>
       </main>
+      <footer className="client-footer">
+        <SiteNavigation currentPath="/clients" />
+      </footer>
     </div>
   )
 }
