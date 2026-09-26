@@ -98,19 +98,6 @@
   text-underline-offset: 0.25em;
 }
 
-.home-statement {
-  max-width: 42rem;
-  margin: 4rem auto 0;
-  color: var(--muted-foreground);
-  font-size: 0.9375rem;
-  line-height: 1.7;
-  text-align: start;
-}
-
-.home-statement p + p {
-  margin-top: 1.25rem;
-}
-
 .home-only ::selection {
   background: oklch(1 0 0);
   color: oklch(0 0 0);
