@@ -267,6 +267,10 @@
   padding-block: 0.75rem;
   text-align: start;
   vertical-align: top;
+  border-bottom: 1px solid var(--border);
+}
+.document thead th {
+  border-top: 1px solid var(--border);
 }
 .document th {
   padding-inline-end: 1.5rem;
