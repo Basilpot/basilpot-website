@@ -2,14 +2,7 @@ import { ArrowUpRight } from "lucide-react"
 import { useState } from "react"
 
 import { clients } from "../data/clients"
-import LineSidebar from "./line-sidebar"
 import { SiteFooter, SiteHeader } from "./site-header"
-
-const clientToc = [
-  "Clients",
-  ...clients.map((client) => client.name),
-  "A note on inspiration",
-]
 
 export function ClientStage() {
   const [activeClient, setActiveClient] = useState<number | null>(null)
@@ -23,16 +16,6 @@ export function ClientStage() {
       <SiteHeader />
 
       <main id="client-work" className="client-main">
-        <LineSidebar
-          items={clientToc}
-          accentColor="#ffffff"
-          textColor="#777777"
-          markerColor="#444444"
-          fontSize={0.7}
-          markerLength={32}
-          maxShift={12}
-          itemGap={12}
-        />
         <div className="client-content">
           <h1 className="client-page-title">Clients</h1>
           <ol className="client-list">
