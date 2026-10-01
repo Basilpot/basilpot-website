@@ -1,6 +1,6 @@
 # Basilpot
 
-Basilpot is a global web design and development studio. This repository contains the public Basilpot website, built with Astro and React.
+Basilpot is a design and development studio. This repository contains the public Basilpot website, built with Astro and React.
 
 The site explains Basilpot's services, shows client work, links to Basilpot products, and gives prospective clients a way to start a project.
 
