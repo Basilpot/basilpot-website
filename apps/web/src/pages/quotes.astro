@@ -1,0 +1,24 @@
+---
+import SiteShell from "../components/site-shell.astro"
+import Main from "../layouts/main.astro"
+
+const quotes = ["Simplicity is a deliberate trade."]
+---
+
+<Main
+  title="Quotes | Basilpot"
+  description="Notes on design, development and building software from Basilpot, a remote web studio working across time zones."
+>
+  <SiteShell>
+    <article>
+      <h1>Quotes</h1>
+      {
+        quotes.map((quote) => (
+          <section>
+            <blockquote>{quote}</blockquote>
+          </section>
+        ))
+      }
+    </article>
+  </SiteShell>
+</Main>
