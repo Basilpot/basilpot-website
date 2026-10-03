@@ -4,16 +4,16 @@ import Main from "../layouts/main.astro"
 
 const team = [
   {
-    name: "Tej Kshetri",
-    role: "Tech Lead",
-    description:
-      "Tej leads the technical direction of Basilpot and the products we build. He works across product engineering, architecture, infrastructure, and design implementation, while helping shape how ideas become reliable, useful software. He keeps our technical decisions practical, our systems maintainable, and our products focused on solving the problem rather than showing off the technology.",
-  },
-  {
     name: "Aashish Khadka",
     role: "Human Lead",
     description:
       "Aashish leads the people-facing side of Basilpot, from client relationships and communication to partnerships and day-to-day operations. He helps connect the people building our products with the people using them, making sure decisions aren't made inside a technical bubble. His focus is keeping our work grounded in actual people, actual businesses, and actual problems.",
+  },
+  {
+    name: "Tej Kshetri",
+    role: "Tech Lead",
+    description:
+      "Tej leads the technical direction of Basilpot and the products we build. He works across product engineering, architecture, infrastructure, and design implementation, while helping shape how ideas become reliable, useful software. He keeps our technical decisions practical, our systems maintainable, and our products focused on solving the problem rather than showing off the technology.",
   }
 ]
 ---
@@ -31,6 +31,7 @@ const team = [
         We also make and maintain a few web products of our own. We work
         remotely across time zones, including with teams in Latin America.
       </p>
+      <div>
       {
         team.map((person) => (
           <section>
@@ -40,6 +41,8 @@ const team = [
           </section>
         ))
       }
+        <br/>
+      </div>
       <p>
         For project inquiries or consultation, contact <a
           href="tel:+9779841328947">+9779841328947 (Tej)</a
