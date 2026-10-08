@@ -585,7 +585,7 @@
   animation: client-reveal 220ms ease-out both;
 }
 
-.client-detail > p:not(.client-credit) {
+.client-detail > p {
   font-size: 1rem;
   line-height: 1.42;
   text-wrap: pretty;
@@ -593,13 +593,6 @@
 
 .client-detail > p + p {
   margin-top: 1rem;
-}
-
-.client-credit {
-  margin-bottom: 0.5rem;
-  font-size: 0.75rem;
-  font-weight: 600;
-  opacity: 0.78;
 }
 
 .client-visit {
@@ -640,7 +633,7 @@
   .client-detail {
     padding-inline-start: 4.7rem;
   }
-  .client-detail > p:not(.client-credit) {
+  .client-detail > p {
     font-size: 1.35rem;
   }
 }

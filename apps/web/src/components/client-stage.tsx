@@ -25,19 +25,6 @@ export function ClientStage() {
                     <span className="client-name">{client.name}</span>
                   </summary>
                   <div className="client-detail">
-                    {client.credit === "growfore" && (
-                      <p className="client-credit">
-                        *built by <a href="/about">Tej</a> at{" "}
-                        <a
-                          href="https://growfore.com/"
-                          target="_blank"
-                          rel="noreferrer"
-                        >
-                          Growfore
-                        </a>
-                        .
-                      </p>
-                    )}
                     <p>{client.detail}</p>
                     <a
                       href={client.url}
