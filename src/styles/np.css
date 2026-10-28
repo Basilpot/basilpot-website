@@ -1088,6 +1088,302 @@ html:has(.np) body {
   }
 }
 
+/* ---------- skip link ---------- */
+
+.skip-link {
+  position: fixed;
+  z-index: 100;
+  inset-block-start: 1rem;
+  inset-inline-start: 1rem;
+  padding: 0.75rem 1rem;
+  background: var(--brand);
+  color: var(--on-brand) !important;
+  font-family: var(--cond);
+  font-weight: 500;
+  text-transform: uppercase;
+  translate: 0 -200%;
+}
+
+.skip-link:focus {
+  translate: 0;
+}
+
+/* ---------- document pages (about, contact, travel ...) ---------- */
+
+.np-doc {
+  width: min(100% - var(--edge) * 2, 46rem);
+  margin-inline: auto;
+  padding: clamp(3.5rem, 7vw, 6rem) 0 clamp(5rem, 9vw, 8rem);
+  font-size: 1.0625rem;
+  line-height: 1.6;
+  overflow-wrap: break-word;
+}
+
+.np-doc h1 {
+  margin: 0 0 2rem;
+  font-family: var(--display);
+  font-size: clamp(3.75rem, 10vw, 8.5rem);
+  font-weight: 300;
+  letter-spacing: -0.012em;
+  line-height: 0.82;
+  text-transform: uppercase;
+}
+
+.np-doc h2 {
+  margin: 3.5rem 0 1rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--line);
+  font-family: var(--display);
+  font-size: clamp(2.25rem, 4vw, 3rem);
+  font-weight: 300;
+  line-height: 0.92;
+  text-transform: uppercase;
+}
+
+.np-doc h3 {
+  margin: 2rem 0 0.75rem;
+  font-family: var(--cond);
+  font-size: 1.125rem;
+  font-weight: 500;
+  text-transform: uppercase;
+}
+
+.np-doc p {
+  margin: 0 0 1rem;
+}
+
+.np-doc a {
+  text-decoration: underline;
+  text-decoration-color: var(--line);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.22em;
+  transition: text-decoration-color 0.2s ease;
+}
+
+.np-doc a:hover {
+  text-decoration-color: currentColor;
+}
+
+.np-doc ul:not([class]),
+.np-doc ol:not([class]) {
+  margin: 0 0 1rem;
+  padding-left: 1.25rem;
+  list-style: square;
+}
+
+.np-doc .document-note {
+  margin-top: -0.25rem;
+  font-family: var(--cond);
+  font-size: 0.875rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  opacity: 0.7;
+}
+
+.np-doc figure {
+  margin: 1.5rem 0;
+}
+
+.np-doc figure img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.np-doc blockquote {
+  margin: 0;
+  padding: 2rem 0;
+  border-bottom: 1px solid var(--line);
+  font-family: var(--display);
+  font-size: clamp(2rem, 4vw, 3rem);
+  font-weight: 300;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.np-doc table {
+  width: 100%;
+  margin: 1.5rem 0;
+  border-collapse: collapse;
+  font-size: 0.9375rem;
+}
+
+.np-doc :is(th, td) {
+  padding: 0.75rem 0.75rem 0.75rem 0;
+  border-bottom: 1px solid var(--line);
+  text-align: left;
+  vertical-align: top;
+}
+
+.np-doc thead th {
+  border-bottom-color: var(--brand);
+  font-family: var(--cond);
+  font-weight: 500;
+  text-transform: uppercase;
+}
+
+.np-doc tbody th {
+  font-weight: 500;
+}
+
+/* brand logos: crimson duotone tiles */
+.np-doc .document-index {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.75rem;
+  margin: 2rem 0 0;
+}
+
+.np-doc .document-index li {
+  display: grid;
+  aspect-ratio: 5 / 3;
+  place-items: center;
+  padding: 1rem;
+  background: var(--brand);
+}
+
+.np-doc .brand-mark {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  /* every logo as a cream silhouette, so dark and light marks both read */
+  filter: brightness(0) invert(0.96) sepia(0.15);
+}
+
+/* logos with a solid white box: invert so the box drops into the crimson */
+.np-doc .brand-mark.is-boxed {
+  filter: grayscale(1) invert(1) brightness(1.5) contrast(2.2);
+  mix-blend-mode: screen;
+}
+
+/* contact form */
+.np-doc .enquiry-form {
+  display: grid;
+  gap: 1.25rem;
+  margin-top: 2.5rem;
+}
+
+.np-doc .form-field {
+  display: grid;
+  gap: 0.4rem;
+}
+
+.np-doc .form-field span {
+  font-family: var(--cond);
+  font-size: 0.9375rem;
+  font-weight: 500;
+  text-transform: uppercase;
+}
+
+.np-doc :is(input, select, textarea) {
+  width: 100%;
+  min-height: 3rem;
+  padding: 0.75rem 0.85rem;
+  border: 1px solid var(--line);
+  border-radius: 0;
+  background: #fff;
+  color: var(--brand);
+  font: inherit;
+  font-size: 1rem;
+}
+
+.np-doc :is(input, select, textarea)::placeholder {
+  color: rgb(220 20 60 / 0.45);
+}
+
+.np-doc :is(input, select, textarea):focus {
+  border-color: var(--brand);
+  outline: 1px solid var(--brand);
+  outline-offset: 0;
+}
+
+.np-doc .submit-button {
+  justify-self: start;
+  min-height: 3rem;
+  padding: 0 1.25rem;
+  border: 0;
+  background: var(--brand);
+  color: var(--on-brand);
+  font-family: var(--cond);
+  font-size: 1.125rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.np-doc .submit-button:hover {
+  background: var(--brand-deep);
+}
+
+/* clients list */
+.np-doc-clients {
+  border-top: 1px solid var(--brand);
+}
+
+.np-doc-clients li {
+  border-bottom: 1px solid var(--line);
+}
+
+.np-doc-clients summary {
+  display: grid;
+  grid-template-columns: 2.5rem minmax(0, 1fr) auto;
+  align-items: baseline;
+  gap: 1rem;
+  padding: 1.25rem 0;
+  cursor: pointer;
+  font-family: var(--display);
+  font-size: clamp(1.9rem, 3.4vw, 2.6rem);
+  font-weight: 300;
+  line-height: 1;
+  list-style: none;
+}
+
+.np-doc-clients summary::-webkit-details-marker {
+  display: none;
+}
+
+.np-doc-clients summary:hover {
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.12em;
+}
+
+.np-doc-no {
+  font-family: var(--mono);
+  font-size: 0.75rem;
+}
+
+.np-doc-kind {
+  font-family: var(--cond);
+  font-size: 0.875rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  opacity: 0.7;
+}
+
+.np-doc-clients details > div {
+  padding: 0 0 1.5rem 3.5rem;
+}
+
+@media (max-width: 680px) {
+  .np-doc .document-index {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .np-doc-clients summary {
+    grid-template-columns: 2rem minmax(0, 1fr);
+  }
+
+  .np-doc-kind {
+    grid-column: 2;
+  }
+
+  .np-doc-clients details > div {
+    padding-left: 3rem;
+  }
+}
+
 /* ---------- motion ---------- */
 
 @media (prefers-reduced-motion: no-preference) {

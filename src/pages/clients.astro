@@ -1,11 +1,42 @@
 ---
-import { ClientStage } from "../components/client-stage"
-import Main from "../layouts/main.astro"
+import SiteShell from "../components/site-shell.astro"
+import { clients } from "../data/clients"
+import Main from "../layouts/np.astro"
+
+const pad = (n: number) => String(n).padStart(2, "0")
 ---
 
 <Main
   title="Website Design Portfolio & Clients | Basilpot"
   description="Explore websites Basilpot built for travel, wellness, healthcare, ecommerce and nonprofit organizations across international markets, including Latin America."
 >
-  <ClientStage />
+  <SiteShell>
+    <article>
+      <h1>Clients</h1>
+      <ol class="np-doc-clients">
+        {
+          clients.map((client, i) => (
+            <li>
+              <details>
+                <summary>
+                  <span class="np-doc-no">{pad(i + 1)}</span>
+                  <span>{client.name}</span>
+                  <span class="np-doc-kind">{client.kind}</span>
+                </summary>
+                <div>
+                  <p>{client.detail}</p>
+                  <p>
+                    <a href={client.url} target="_blank" rel="noreferrer">
+                      Visit {client.name} ↗
+                      <span class="sr-only">(opens in a new tab)</span>
+                    </a>
+                  </p>
+                </div>
+              </details>
+            </li>
+          ))
+        }
+      </ol>
+    </article>
+  </SiteShell>
 </Main>

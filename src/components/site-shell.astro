@@ -1,5 +1,4 @@
 ---
-import { SiteFooter, SiteHeader } from "./site-header"
 import LineSidebar from "./line-sidebar"
 
 const pathname = Astro.url.pathname
@@ -48,26 +47,23 @@ const toc =
   }[pathname.replace(/\/$/, "")] ?? []
 ---
 
-<div class="site-shell">
-  <a href="#main" class="skip-link">Skip to content</a>
-  <SiteHeader />
-  <main id="main" tabindex="-1" class="document">
-    {
-      toc.length > 0 && (
-        <LineSidebar
-          client:load
-          items={toc}
-          accentColor="#ffffff"
-          textColor="#777777"
-          markerColor="#444444"
-          fontSize={0.7}
-          markerLength={32}
-          maxShift={12}
-          itemGap={12}
-        />
-      )
-    }
+<div class="np-doc-wrap">
+  {
+    toc.length > 0 && (
+      <LineSidebar
+        client:load
+        items={toc}
+        accentColor="#dc143c"
+        textColor="rgb(220 20 60 / 0.55)"
+        markerColor="rgb(220 20 60 / 0.3)"
+        fontSize={0.7}
+        markerLength={32}
+        maxShift={12}
+        itemGap={12}
+      />
+    )
+  }
+  <div class="np-doc">
     <slot />
-  </main>
-  <SiteFooter currentPath={pathname} />
+  </div>
 </div>
