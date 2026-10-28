@@ -1,0 +1,225 @@
+---
+import Himalaya from "../components/art/himalaya.astro"
+import Pagoda from "../components/art/pagoda.astro"
+import PeacockWindow from "../components/art/peacock-window.astro"
+import Pottery from "../components/art/pottery.astro"
+import Stupa from "../components/art/stupa.astro"
+import SingingBowl from "../components/art/singing-bowl.astro"
+import TulsiMath from "../components/art/tulsi-math.astro"
+import ClosePanel from "../components/np/close-panel.astro"
+import Np from "../layouts/np.astro"
+
+const services = [
+  {
+    id: "business",
+    label: "For businesses",
+    title: "Business websites",
+    body: "Custom websites shaped around the business, its content and the people it needs to reach.",
+    includes: [
+      "Information architecture",
+      "Design",
+      "Development",
+      "Content management",
+      "Enquiry flows",
+    ],
+    art: "window",
+    wide: false,
+    caption: "Carved window, after Bhaktapur",
+  },
+  {
+    id: "travel",
+    label: "For travel companies",
+    title: "Travel websites",
+    body: "Travel websites with structured trips, day-by-day itineraries, destinations, editorial content and enquiries.",
+    includes: ["Trips", "Itineraries", "Destinations", "Editorial", "Enquiries"],
+    link: ["Read about travel websites", "/travel"],
+    art: "himalaya",
+    wide: true,
+    caption: "Fishtail peak above terraced hills",
+  },
+  {
+    id: "ecommerce",
+    label: "For brands",
+    title: "Ecommerce websites",
+    body: "Custom online stores with product catalogues, collections, content and storefronts designed around the brand.",
+    includes: ["Catalogues", "Collections", "Store content", "Storefronts"],
+    link: ["Read about ecommerce websites", "/ecommerce"],
+    art: "pottery",
+    wide: true,
+    caption: "Potters' square, Bhaktapur",
+  },
+  {
+    id: "migration",
+    label: "Rebuilds",
+    title: "Website migration",
+    body: "Rebuilds and platform migrations that preserve useful content, plan redirects and improve structure without carrying unnecessary legacy code forward.",
+    includes: ["Content audit", "Redirect plans", "New structure", "Clean rebuild"],
+    art: "pagoda",
+    wide: false,
+    caption: "Pagoda, rebuilt around its old carvings",
+  },
+  {
+    id: "maintenance",
+    label: "Care",
+    title: "Maintenance",
+    body: "Ongoing technical support, content changes, performance work and improvements for websites we build and systems we know well.",
+    includes: ["Support", "Content changes", "Performance", "Improvements"],
+    art: "tulsi",
+    wide: false,
+    caption: "Tulsi (basil) shrine, tended every day",
+  },
+  {
+    id: "media",
+    label: "Reach",
+    title: "Media and marketing",
+    body: "Digital media and marketing support grounded in the business, its audience and measurable needs.",
+    includes: ["Digital media", "Marketing", "Audience", "Measurement"],
+    link: ["View media and marketing work", "/media-and-marketing"],
+    art: "bowl",
+    wide: true,
+    caption: "Singing bowl, struck once, heard far",
+  },
+] as const
+
+const cities = [
+  ["Kathmandu", "Asia/Kathmandu"],
+  ["London", "Europe/London"],
+  ["New York", "America/New_York"],
+  ["São Paulo", "America/Sao_Paulo"],
+] as const
+
+const pad = (n: number) => String(n).padStart(2, "0")
+---
+
+<Np
+  title="Design & Development Services | Basilpot"
+  description="Custom design and development for businesses, travel companies and ecommerce brands across time zones, plus migration, maintenance and marketing."
+  serviceType="Design and development"
+>
+  <section class="np-hero sv-hero" aria-labelledby="sv-title">
+    <p class="np-eyebrow">Services</p>
+    <h1 id="sv-title" class="np-mega">Design &amp; Development</h1>
+    <div class="np-hero-text">
+      <p>
+        We design, build and support websites and web systems for businesses,
+        travel companies and ecommerce brands, including teams across Latin
+        America.
+      </p>
+    </div>
+    <div class="np-btns">
+      <a class="np-btn" href="/clients">See client work</a>
+      <a class="np-btn np-btn-solid" href="/contact">Start a project</a>
+    </div>
+  </section>
+
+  <nav class="sv-index" aria-label="Services on this page">
+    <ol>
+      {
+        services.map((s, i) => (
+          <li>
+            <a href={`#${s.id}`}>
+              <span class="sv-index-no">{pad(i + 1)}</span>
+              <span>{s.title}</span>
+            </a>
+          </li>
+        ))
+      }
+    </ol>
+  </nav>
+
+  <div class="sv-list">
+    {
+      services.map((s, i) => (
+        <article
+          id={s.id}
+          class:list={["sv-row", { "sv-row-flip": i % 2 === 1 }]}
+          aria-labelledby={`${s.id}-title`}
+        >
+          <div class="sv-text">
+            <p class="np-label">
+              <span class="sv-no">{pad(i + 1)}</span> {s.label}
+            </p>
+            <h2 id={`${s.id}-title`} class="sv-title">
+              {s.title}
+            </h2>
+            <p class="sv-body">{s.body}</p>
+            <ul class="sv-tags" aria-label="Includes">
+              {s.includes.map((t) => (
+                <li>{t}</li>
+              ))}
+            </ul>
+            {"link" in s && (
+              <a class="np-btn" href={s.link[1]}>
+                {s.link[0]}
+              </a>
+            )}
+          </div>
+          <figure class:list={["np-plate", "sv-plate", { "is-wide": s.wide }]}>
+            <div class="np-plate-stage">
+              <div class="np-plate-weave" aria-hidden="true" />
+              <div class="np-scan np-plate-art">
+                {s.art === "window" && <PeacockWindow />}
+                {s.art === "himalaya" && <Himalaya />}
+                {s.art === "pottery" && <Pottery />}
+                {s.art === "pagoda" && <Pagoda sun={false} />}
+                {s.art === "tulsi" && <TulsiMath />}
+                {s.art === "bowl" && <SingingBowl />}
+              </div>
+              <div class="np-plate-weave" aria-hidden="true" />
+            </div>
+            <figcaption class="np-label">
+              Fig. {pad(i + 1)} — {s.caption}
+            </figcaption>
+          </figure>
+        </article>
+      ))
+    }
+  </div>
+
+  <section class="np-panel sv-remote" aria-labelledby="remote-title">
+    <div class="np-scan sv-remote-art">
+      <Stupa />
+    </div>
+    <div class="sv-remote-head">
+      <p class="np-label">Remote teams, international reach</p>
+      <h2 id="remote-title" class="np-mega np-mega-left">
+        One studio, many time zones
+      </h2>
+      <p class="np-small">
+        We work across time zones with businesses and brands in Latin America
+        and South America. Project communication stays direct, with written
+        plans and clear handoffs.
+      </p>
+    </div>
+    <ul class="sv-clocks">
+      {
+        cities.map(([city, tz]) => (
+          <li>
+            <span class="np-label">{city}</span>
+            <time class="np-mega" data-tz={tz}>
+              --:--
+            </time>
+          </li>
+        ))
+      }
+    </ul>
+  </section>
+
+  <ClosePanel />
+
+  <script>
+    const clocks = document.querySelectorAll<HTMLTimeElement>("[data-tz]")
+    const tick = () => {
+      const now = new Date()
+      clocks.forEach((el) => {
+        el.textContent = new Intl.DateTimeFormat("en-GB", {
+          timeZone: el.dataset.tz,
+          hour: "2-digit",
+          minute: "2-digit",
+        }).format(now)
+      })
+    }
+    tick()
+    setInterval(tick, 30_000)
+  </script>
+</Np>

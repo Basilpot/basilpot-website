@@ -1,0 +1,248 @@
+---
+import Glyph from "../components/art/glyph.astro"
+import Pagoda from "../components/art/pagoda.astro"
+import PeacockWindow from "../components/art/peacock-window.astro"
+import Stupa from "../components/art/stupa.astro"
+import TulsiMath from "../components/art/tulsi-math.astro"
+import ClosePanel from "../components/np/close-panel.astro"
+import { clients } from "../data/clients"
+import { products } from "../data/products"
+import Np from "../layouts/np.astro"
+
+const host = (url: string) => new URL(url).host.replace(/^www\./, "")
+
+const productMeta: Record<string, { label: string; shot: string }> = {
+  "Launch Bunch": { label: "Directory", shot: "/shots/launchbunch.jpg" },
+  TravelFast: { label: "Marketplace", shot: "/shots/travelfast.jpg" },
+  "Ash & Moss": { label: "Ecommerce", shot: "/shots/ashandmoss.jpg" },
+  Reviewpot: { label: "Reviews", shot: "/shots/reviewpot.jpg" },
+  Fullbleed: { label: "Content", shot: "/shots/fullbleed.jpg" },
+  LINKS: { label: "Link pages", shot: "/shots/links.jpg" },
+}
+
+const clientShots: Record<string, string> = {
+  "Hex Healing Hub Pokhara": "/shots/hex.jpg",
+  "Hope Fertility": "/shots/hope.jpg",
+  "SADP Nepal": "/shots/sadp.jpg",
+}
+
+const rows = [
+  {
+    label: "Design",
+    title: "Websites shaped around the people they serve",
+    body: "Information architecture, design and content for businesses, travel companies and ecommerce brands. Written plans, direct communication and clear handoffs.",
+    art: "window",
+    caption: "Carved window, after Bhaktapur",
+  },
+  {
+    label: "Build",
+    title: "Systems that hold up, roof after roof",
+    body: "Travel sites with structured trips and itineraries, online stores with catalogues and collections, and business sites with content management and enquiry flows.",
+    art: "pagoda",
+    caption: "Five-roofed pagoda, Kathmandu Valley",
+  },
+  {
+    label: "Care",
+    title: "Tended daily, like the tulsi (basil) in the courtyard",
+    body: "Migrations that keep what works, then ongoing support, performance work and content changes for years after launch.",
+    art: "tulsi",
+    caption: "Tulsi math, courtyard shrine",
+  },
+] as const
+
+---
+
+<Np
+  title="Basilpot | Design & Development Studio"
+  description="Basilpot is a design and development studio from Nepal, building custom business, travel and ecommerce websites for teams across time zones."
+>
+      <!-- Hero -->
+      <section class="np-hero" aria-labelledby="hero-title">
+        <p class="np-eyebrow">Design <i>•</i> Development <i>•</i> Products</p>
+        <h1 id="hero-title" class="np-mega">Basilpot Studio</h1>
+        <div class="np-hero-text">
+          <p>
+            Basilpot is a design and development studio from Nepal. We build
+            custom business, travel and ecommerce websites for teams across time
+            zones.
+          </p>
+          <p>We also make and maintain a few web products of our own.</p>
+        </div>
+        <div class="np-btns">
+          <a class="np-btn" href="/services">Our services</a>
+          <a class="np-btn np-btn-solid" href="/contact">Start a project</a>
+        </div>
+      </section>
+
+      <!-- Ink panel -->
+      <section class="np-panel" aria-labelledby="panel-title">
+        <div class="np-panel-hero">
+          <div class="np-scan np-stupa">
+            <Stupa />
+          </div>
+          <h2 id="panel-title" class="np-mega np-panel-title">
+            Made in the Himalayas
+          </h2>
+        </div>
+
+        {
+          rows.map((r, i) => (
+            <article class:list={["np-row", { "np-row-flip": i % 2 === 1 }]}>
+              <div class="np-row-text">
+                <p class="np-label">{r.label}</p>
+                <h3 class="np-title">{r.title}</h3>
+                <p class="np-small">{r.body}</p>
+              </div>
+              <figure class="np-plate">
+                <div class="np-plate-stage">
+                  <div class="np-plate-weave" aria-hidden="true" />
+                  <div class="np-scan np-plate-art">
+                    {r.art === "window" && <PeacockWindow />}
+                    {r.art === "pagoda" && <Pagoda sun={false} />}
+                    {r.art === "tulsi" && <TulsiMath />}
+                  </div>
+                  <div class="np-plate-weave" aria-hidden="true" />
+                </div>
+                <figcaption class="np-label">
+                  Fig. {["I", "II", "III"][i]} — {r.caption}
+                </figcaption>
+              </figure>
+            </article>
+          ))
+        }
+      </section>
+
+      <!-- Products -->
+      <section class="np-products" aria-labelledby="products-title">
+        <Glyph name="knot" size={44} class="np-products-knot" />
+        <p class="np-eyebrow">Our own products</p>
+        <h2 id="products-title" class="np-mega">Things we grow</h2>
+        <div class="np-two">
+          <p>
+            Alongside client work we build and run our own products, from a
+            vehicle rental marketplace in Nepal to the ecommerce system behind
+            our stores.
+          </p>
+          <p>
+            Every product here is designed, built and maintained by the same
+            small team that builds our client websites.
+          </p>
+        </div>
+        <div class="np-btns">
+          <a class="np-btn" href="/about">About the studio</a>
+          <a class="np-btn np-btn-solid" href="#catalog">See the products</a>
+        </div>
+
+        <div class="np-showcase">
+          <div class="np-showcase-weave" aria-hidden="true"></div>
+          <div class="np-window">
+            <div class="np-window-bar" aria-hidden="true">
+              <span></span><span></span><span></span>
+              <p data-show-url>{host(products[0].url)}</p>
+            </div>
+            <div class="np-window-body">
+              {
+                products.map((p, i) => (
+                  <img
+                    src={productMeta[p.name].shot}
+                    alt={i === 0 ? `${p.name} homepage` : ""}
+                    width="1100"
+                    height="688"
+                    loading="lazy"
+                    decoding="async"
+                    data-show={host(p.url)}
+                    class:list={{ "is-on": i === 0 }}
+                  />
+                ))
+              }
+            </div>
+          </div>
+        </div>
+
+        <ul class="np-cards" id="catalog">
+          {
+            products.map((p) => (
+              <li>
+                <p class="np-label">{productMeta[p.name].label}</p>
+                <h3 class="np-title">{p.name}</h3>
+                <div class="np-duo">
+                  <img
+                    src={productMeta[p.name].shot}
+                    alt=""
+                    width="1100"
+                    height="688"
+                    loading="lazy"
+                    decoding="async"
+                  />
+                </div>
+                <p class="np-small np-card-desc">{p.description}</p>
+                <a class="np-btn" href={p.url} target="_blank" rel="noreferrer">
+                  Visit {host(p.url)}
+                  <span class="sr-only">(opens in a new tab)</span>
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+      </section>
+
+      <!-- Clients -->
+      <section class="np-clients" aria-labelledby="clients-title">
+        <h2 id="clients-title" class="np-mega np-mega-left">
+          Client work<sup aria-hidden="true">↗</sup>
+        </h2>
+        <ul class="np-rail">
+          {
+            clients.map((c) => (
+              <li>
+                <a href={c.url} target="_blank" rel="noreferrer">
+                  <span class="np-duo">
+                    <img
+                      src={clientShots[c.name] ?? "/shots/hex.jpg"}
+                      alt=""
+                      width="1100"
+                      height="688"
+                      loading="lazy"
+                      decoding="async"
+                    />
+                  </span>
+                  <span class="np-label">{c.kind}</span>
+                  <span class="np-rail-name">{c.name}</span>
+                  <span class="np-small">{c.summary}</span>
+                  <span class="np-label np-faint">
+                    {host(c.url)}
+                    <span class="sr-only">(opens in a new tab)</span>
+                  </span>
+                </a>
+              </li>
+            ))
+          }
+          <li class="np-rail-more">
+            <a href="/clients">
+              <span class="np-mega">All clients</span>
+              <span class="np-label">Travel, wellness, healthcare, nonprofit</span>
+            </a>
+          </li>
+        </ul>
+      </section>
+
+      <ClosePanel />
+
+  <script>
+    // Product showcase: cycle screenshots
+    const shots = [
+      ...document.querySelectorAll<HTMLImageElement>("[data-show]"),
+    ]
+    const url = document.querySelector<HTMLElement>("[data-show-url]")
+    const still = window.matchMedia("(prefers-reduced-motion: reduce)").matches
+    if (shots.length > 1 && url && !still) {
+      let i = 0
+      setInterval(() => {
+        shots[i].classList.remove("is-on")
+        i = (i + 1) % shots.length
+        shots[i].classList.add("is-on")
+        url.textContent = shots[i].dataset.show ?? ""
+      }, 3200)
+    }
+  </script>
+</Np>

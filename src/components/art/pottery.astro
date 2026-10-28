@@ -1,0 +1,173 @@
+---
+// Engraving after Bhaktapur's pottery square: a potter's wheel with a pot being
+// thrown, and finished vessels drying in rows.
+
+interface Props {
+  class?: string
+}
+
+const { class: className } = Astro.props
+
+const W = 760
+const H = 440
+const ground = 420
+
+type Profile = [number, number][] // [height from base, radius]
+
+const shapes: Record<string, Profile> = {
+  gagri: [[0, 20], [6, 30], [26, 52], [50, 58], [74, 50], [92, 30], [100, 20], [106, 22], [110, 26]],
+  kalash: [[0, 18], [8, 28], [28, 46], [52, 50], [72, 40], [84, 22], [92, 18], [98, 28], [102, 30]],
+  jar: [[0, 24], [20, 34], [60, 40], [100, 36], [124, 26], [134, 22], [140, 26]],
+  bowl: [[0, 16], [6, 26], [16, 38], [24, 44], [26, 44]],
+  diyo: [[0, 8], [4, 14], [8, 18], [10, 18]],
+}
+
+function vessel(profile: Profile, cx: number, base: number, scale = 1) {
+  const pts = profile.map(([h, r]) => [r * scale, base - h * scale] as const)
+  const right = pts.map(([r, y]) => `${(cx + r).toFixed(1)} ${y.toFixed(1)}`)
+  const left = [...pts].reverse().map(([r, y]) => `${(cx - r).toFixed(1)} ${y.toFixed(1)}`)
+  const outline = `M ${right.join(" L ")} L ${left.join(" L ")} Z`
+  const [topR, topY] = pts[pts.length - 1]
+  const [, midY] = pts[Math.floor(pts.length / 2)]
+  const maxR = Math.max(...pts.map(([r]) => r))
+  return { outline, cx, topR, topY, midY, maxR, base, scale }
+}
+
+// Rows of drying vessels
+const back = [
+  vessel(shapes.jar, 388, 330, 0.8),
+  vessel(shapes.gagri, 470, 330, 0.85),
+  vessel(shapes.kalash, 550, 330, 0.85),
+  vessel(shapes.gagri, 630, 330, 0.85),
+  vessel(shapes.jar, 708, 330, 0.8),
+]
+const front = [
+  vessel(shapes.gagri, 420, ground, 1.15),
+  vessel(shapes.kalash, 540, ground, 1.15),
+  vessel(shapes.jar, 660, ground, 1),
+]
+const smalls = [
+  vessel(shapes.bowl, 330, ground, 1),
+  vessel(shapes.diyo, 735, ground, 1.2),
+  vessel(shapes.diyo, 705, ground, 1),
+]
+
+// Wheel with a pot mid-throw
+const wheel = { cx: 150, cy: 360, rx: 108, ry: 22 }
+const thrown = vessel(
+  [[0, 34], [20, 40], [44, 36], [60, 24], [68, 22], [72, 26]],
+  wheel.cx,
+  wheel.cy - 4,
+  1.2
+)
+---
+
+<svg
+  class={className}
+  viewBox={`0 196 ${W} ${H - 196}`}
+  role="img"
+  aria-labelledby="pottery-title"
+  xmlns="http://www.w3.org/2000/svg"
+>
+  <title id="pottery-title">
+    Engraving of a potter's wheel and clay vessels drying in rows
+  </title>
+  <defs>
+    <pattern id="pt-hatch" width="3.6" height="3.6" patternUnits="userSpaceOnUse">
+      <line x1="0" y1="1.8" x2="3.6" y2="1.8" class="ink" stroke-width="0.9"></line>
+    </pattern>
+    <pattern id="pt-dots" width="5" height="5" patternUnits="userSpaceOnUse">
+      <circle cx="2.5" cy="2.5" r="0.8" class="inkfill"></circle>
+    </pattern>
+  </defs>
+
+  <g fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <!-- back shelf -->
+    <rect x="340" y="330" width="410" height="10" class="paper ink" stroke-width="1.2"></rect>
+    <line x1="352" y1="340" x2="352" y2={ground} class="ink" stroke-width="1.2"></line>
+    <line x1="738" y1="340" x2="738" y2={ground} class="ink" stroke-width="1.2"></line>
+
+    {
+      [...back, ...front, ...smalls].map((v, i) => (
+        <g>
+          <clipPath id={`pt-v${i}`}>
+            <path d={v.outline} />
+          </clipPath>
+          <path d={v.outline} class="paper ink" stroke-width="1.3" />
+          <rect
+            x={v.cx + v.maxR * 0.35}
+            y={v.topY - 4}
+            width={v.maxR}
+            height={v.base - v.topY + 4}
+            fill="url(#pt-hatch)"
+            clip-path={`url(#pt-v${i})`}
+          />
+          <ellipse cx={v.cx} cy={v.topY} rx={v.topR} ry={v.topR * 0.24} class="paper ink" stroke-width="1.1" />
+          <path
+            d={`M ${v.cx - v.maxR * 0.92} ${v.midY} Q ${v.cx} ${v.midY + v.maxR * 0.2} ${v.cx + v.maxR * 0.92} ${v.midY}`}
+            class="ink"
+            stroke-width="0.8"
+          />
+          <ellipse cx={v.cx} cy={v.base} rx={v.maxR * 0.9} ry="3" class="inkfill" opacity="0.35" />
+        </g>
+      ))
+    }
+
+    <!-- wheel -->
+    <ellipse cx={wheel.cx} cy={wheel.cy + 14} rx={wheel.rx} ry={wheel.ry} class="paper ink" stroke-width="1.4"></ellipse>
+    <path
+      d={`M ${wheel.cx - wheel.rx} ${wheel.cy} L ${wheel.cx - wheel.rx} ${wheel.cy + 14} A ${wheel.rx} ${wheel.ry} 0 0 0 ${wheel.cx + wheel.rx} ${wheel.cy + 14} L ${wheel.cx + wheel.rx} ${wheel.cy}`}
+      class="paper ink"
+      stroke-width="1.4"></path>
+    <path
+      d={`M ${wheel.cx + 20} ${wheel.cy + 2} L ${wheel.cx + wheel.rx} ${wheel.cy} L ${wheel.cx + wheel.rx} ${wheel.cy + 14} A ${wheel.rx} ${wheel.ry} 0 0 1 ${wheel.cx + 20} ${wheel.cy + 36} Z`}
+      fill="url(#pt-hatch)"></path>
+    <ellipse cx={wheel.cx} cy={wheel.cy} rx={wheel.rx} ry={wheel.ry} class="paper ink" stroke-width="1.4"></ellipse>
+    {
+      [0.35, 0.6, 0.85].map((f) => (
+        <ellipse cx={wheel.cx} cy={wheel.cy} rx={wheel.rx * f} ry={wheel.ry * f} class="ink" stroke-width="0.6" stroke-dasharray="4 5" />
+      ))
+    }
+    <!-- motion arcs -->
+    <path d={`M ${wheel.cx - 128} ${wheel.cy - 8} A 130 30 0 0 1 ${wheel.cx - 60} ${wheel.cy - 30}`} class="ink" stroke-width="1"></path>
+    <path d={`M ${wheel.cx + 128} ${wheel.cy + 26} A 130 30 0 0 1 ${wheel.cx + 60} ${wheel.cy + 46}`} class="ink" stroke-width="1"></path>
+
+    <!-- pot on the wheel -->
+    <path d={thrown.outline} class="paper ink" stroke-width="1.4"></path>
+    <path d={thrown.outline} fill="url(#pt-dots)"></path>
+    <ellipse cx={thrown.cx} cy={thrown.topY} rx={thrown.topR} ry={thrown.topR * 0.24} class="paper ink" stroke-width="1.1"></ellipse>
+    {
+      [0.25, 0.5, 0.75].map((f) => {
+        const y = thrown.base - (thrown.base - thrown.topY) * f
+        return <path d={`M ${thrown.cx - 42} ${y} Q ${thrown.cx} ${y + 6} ${thrown.cx + 42} ${y}`} class="ink" stroke-width="0.7" />
+      })
+    }
+
+    <!-- wheel stick -->
+    <line x1={wheel.cx + 70} y1={wheel.cy - 6} x2={wheel.cx + 132} y2={wheel.cy - 120} class="ink" stroke-width="2"></line>
+
+    <line x1="0" y1={ground} x2={W} y2={ground} class="ink" stroke-width="1.4"></line>
+    {
+      Array.from({ length: 30 }, (_, i) => (
+        <line x1={i * 26 + 8} y1={ground + 7} x2={i * 26 + 20} y2={ground + 7} class="ink" stroke-width="0.8" />
+      ))
+    }
+  </g>
+</svg>
+
+<style>
+  svg {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+  .ink {
+    stroke: var(--ink);
+  }
+  .inkfill {
+    fill: var(--ink);
+  }
+  .paper {
+    fill: var(--paper);
+  }
+</style>

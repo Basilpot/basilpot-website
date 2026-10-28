@@ -1,0 +1,75 @@
+---
+import { products } from "../../data/products"
+import Kumari from "../art/kumari.astro"
+import Pagoda from "../art/pagoda.astro"
+import PeacockWindow from "../art/peacock-window.astro"
+
+const cols = [
+  {
+    title: "Studio",
+    links: [
+      ["About", "/about"],
+      ["Clients", "/clients"],
+      ["Quotes", "/quotes"],
+      ["Contact", "/contact"],
+    ],
+  },
+  {
+    title: "Services",
+    links: [
+      ["All services", "/services"],
+      ["Travel websites", "/travel"],
+      ["Ecommerce", "/ecommerce"],
+      ["Media & marketing", "/media-and-marketing"],
+    ],
+  },
+  {
+    title: "Products",
+    links: products.map((p) => [p.name, p.url] as const),
+  },
+]
+
+const external = (href: string) =>
+  href.startsWith("http") ? { target: "_blank", rel: "noreferrer" } : {}
+---
+
+<footer class="np-footer">
+  <div class="np-footer-top">
+    <a href="/" class="np-footer-brand np-mega">Basilpot</a>
+    <div class="np-badges" aria-hidden="true">
+      <div class="np-badge-tile"><Kumari /></div>
+      <div class="np-badge-tile"><PeacockWindow /></div>
+      <div class="np-badge-tile"><Pagoda sun={false} /></div>
+    </div>
+  </div>
+  <div class="np-footer-cols">
+    {
+      cols.map((col) => (
+        <nav aria-label={col.title}>
+          <p class="np-label">{col.title}</p>
+          <ul>
+            {col.links.map(([label, href]) => (
+              <li>
+                <a href={href} {...external(href)}>
+                  {label}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </nav>
+      ))
+    }
+    <div>
+      <p class="np-label">Contact</p>
+      <ul>
+        <li><a href="mailto:seed@basilpot.com">seed@basilpot.com</a></li>
+        <li><a href="tel:+9779841328947">+977 984 132 8947</a></li>
+        <li><a href="tel:+9779805106358">+977 980 510 6358</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="np-footer-base">
+    <p class="np-label">© {new Date().getFullYear()} Basilpot</p>
+    <p class="np-label">Nepal <i>•</i> Working across time zones</p>
+  </div>
+</footer>

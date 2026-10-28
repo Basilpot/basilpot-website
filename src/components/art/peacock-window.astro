@@ -1,0 +1,158 @@
+---
+// Engraving of a Newar carved window in the manner of Bhaktapur's peacock window:
+// a carved frame, a fanned lattice of tail feathers and the peacock at its root.
+
+interface Props {
+  class?: string
+}
+
+const { class: className } = Astro.props
+
+const W = 440
+const H = 480
+const inner = { x: 84, y: 92, w: 272, h: 300 }
+const root = { x: W / 2, y: inner.y + inner.h - 58 }
+
+const spokes = Array.from({ length: 31 }, (_, i) => 180 + (i * 180) / 30)
+const toXY = (deg: number, r: number) => ({
+  x: root.x + Math.cos((deg * Math.PI) / 180) * r,
+  y: root.y + Math.sin((deg * Math.PI) / 180) * r,
+})
+const arcs = [70, 120, 170, 220]
+const eyes = spokes
+  .filter((_, i) => i % 2 === 1)
+  .flatMap((a, i) => [
+    { ...toXY(a, 146), a, big: true },
+    ...(i % 2 === 0 ? [{ ...toXY(a, 96), a, big: false }] : []),
+  ])
+
+// Beaded border between the frame lines.
+const beads: { x: number; y: number }[] = []
+for (let x = 46; x <= W - 46; x += 12) {
+  beads.push({ x, y: 50 }, { x, y: H - 26 })
+}
+for (let y = 62; y <= H - 38; y += 12) {
+  beads.push({ x: 46, y }, { x: W - 46, y })
+}
+---
+
+<svg
+  class={className}
+  viewBox={`0 0 ${W} ${H}`}
+  role="img"
+  aria-labelledby="window-title"
+  xmlns="http://www.w3.org/2000/svg"
+>
+  <title id="window-title">
+    Engraving of a carved Newar window with a peacock and fanned lattice
+  </title>
+  <defs>
+    <clipPath id="pw-inner">
+      <rect x={inner.x} y={inner.y} width={inner.w} height={inner.h}></rect>
+    </clipPath>
+    <pattern id="pw-hatch" width="3.4" height="3.4" patternUnits="userSpaceOnUse">
+      <line x1="0" y1="1.7" x2="3.4" y2="1.7" class="ink" stroke-width="0.9"></line>
+    </pattern>
+  </defs>
+
+  <g fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <!-- lintel with projecting ends -->
+    <path
+      d={`M 6 22 L ${W - 6} 22 L ${W - 18} 38 L 18 38 Z`}
+      class="paper ink"
+      stroke-width="1.4"></path>
+    <rect x="30" y="38" width={W - 60} height={H - 52} class="paper ink" stroke-width="1.6"></rect>
+    <rect x="38" y="44" width={W - 76} height={H - 64} class="ink" stroke-width="1"></rect>
+    {beads.map((b) => <circle cx={b.x} cy={b.y} r="3" class="ink" stroke-width="0.9" />)}
+    <rect x="56" y="62" width={W - 112} height={H - 100} class="ink" stroke-width="1.2"></rect>
+    <rect x="64" y="70" width={W - 128} height={H - 116} fill="url(#pw-hatch)"></rect>
+
+    <!-- carved corner brackets -->
+    {
+      [
+        [inner.x, inner.y, 1, 1],
+        [inner.x + inner.w, inner.y, -1, 1],
+      ].map(([x, y, sx, sy]) => (
+        <path
+          d={`M ${x} ${y} L ${x + sx * 40} ${y} Q ${x + sx * 14} ${y + sy * 8} ${x} ${y + sy * 40} Z`}
+          class="paper ink"
+          stroke-width="1"
+        />
+      ))
+    }
+
+    <!-- opening -->
+    <rect x={inner.x} y={inner.y} width={inner.w} height={inner.h} class="paper ink" stroke-width="1.4"></rect>
+    <g clip-path="url(#pw-inner)">
+      {
+        spokes.map((a) => {
+          const p = toXY(a, 400)
+          return <line x1={root.x} y1={root.y} x2={p.x} y2={p.y} class="ink" stroke-width="1" />
+        })
+      }
+      {
+        arcs.map((r) => (
+          <path
+            d={`M ${root.x - r} ${root.y} A ${r} ${r} 0 0 1 ${root.x + r} ${root.y}`}
+            class="ink"
+            stroke-width="0.8"
+          />
+        ))
+      }
+      {
+        eyes.map((e) => (
+          <g transform={`translate(${e.x} ${e.y}) rotate(${e.a + 90})`}>
+            <ellipse rx={e.big ? 7 : 5} ry={e.big ? 12 : 8} class="paper ink" stroke-width="1" />
+            <ellipse rx={e.big ? 3.5 : 2.4} ry={e.big ? 6 : 4} class="inkfill" />
+          </g>
+        ))
+      }
+      <rect x={inner.x} y={root.y} width={inner.w} height={inner.h} class="paper"></rect>
+    </g>
+
+    <!-- peacock -->
+    <g transform={`translate(${root.x} ${root.y})`}>
+      <path
+        d="M -34 6 C -30 -18 -8 -26 6 -20 C 20 -14 26 -2 30 6 Z"
+        class="paper ink"
+        stroke-width="1.4"></path>
+      <path d="M -24 0 C -16 -10 0 -14 14 -8" class="ink" stroke-width="0.8"></path>
+      <path d="M -18 4 C -10 -4 4 -6 18 0" class="ink" stroke-width="0.8"></path>
+      <path
+        d="M 6 -20 C 4 -34 -2 -44 2 -54 C 6 -60 14 -58 14 -52 L 22 -50 L 14 -48 C 12 -40 14 -30 18 -16"
+        class="paper ink"
+        stroke-width="1.4"></path>
+      <circle cx="8" cy="-53" r="1.6" class="inkfill"></circle>
+      {
+        [-6, 0, 6].map((d) => (
+          <g>
+            <line x1="6" y1="-58" x2={6 + d} y2="-70" class="ink" stroke-width="0.9" />
+            <circle cx={6 + d} cy="-72" r="2" class="inkfill" />
+          </g>
+        ))
+      }
+      <line x1="-40" y1="6" x2="40" y2="6" class="ink" stroke-width="1.2"></line>
+    </g>
+
+    <!-- sill -->
+    <rect x={inner.x - 8} y={inner.y + inner.h} width={inner.w + 16} height="10" class="paper ink" stroke-width="1.2"></rect>
+    <rect x="18" y={H - 14} width={W - 36} height="12" class="paper ink" stroke-width="1.4"></rect>
+  </g>
+</svg>
+
+<style>
+  svg {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+  .ink {
+    stroke: var(--ink);
+  }
+  .inkfill {
+    fill: var(--ink);
+  }
+  .paper {
+    fill: var(--paper);
+  }
+</style>

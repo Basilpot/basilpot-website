@@ -1,0 +1,210 @@
+---
+// Engraving of a tulsi math: the courtyard shrine that holds holy basil in Nepali homes.
+// Plant geometry is generated from a fixed seed so the drawing is stable across builds.
+
+interface Props {
+  class?: string
+}
+
+const { class: className } = Astro.props
+
+const cx = 200
+const H = 620
+
+let seed = 11
+const rand = () => {
+  seed = (seed * 16807) % 2147483647
+  return (seed - 1) / 2147483646
+}
+
+type Pt = { x: number; y: number }
+const quad = (a: Pt, c: Pt, b: Pt, t: number): Pt => ({
+  x: (1 - t) ** 2 * a.x + 2 * (1 - t) * t * c.x + t ** 2 * b.x,
+  y: (1 - t) ** 2 * a.y + 2 * (1 - t) * t * c.y + t ** 2 * b.y,
+})
+const tangent = (a: Pt, c: Pt, b: Pt, t: number) => {
+  const dx = 2 * (1 - t) * (c.x - a.x) + 2 * t * (b.x - c.x)
+  const dy = 2 * (1 - t) * (c.y - a.y) + 2 * t * (b.y - c.y)
+  return (Math.atan2(dy, dx) * 180) / Math.PI
+}
+
+const potLip = 214
+
+const stemSpecs = [
+  { dx: -118, top: 92, lean: -30 },
+  { dx: -78, top: 52, lean: -18 },
+  { dx: -34, top: 26, lean: -8 },
+  { dx: 6, top: 14, lean: 2 },
+  { dx: 44, top: 34, lean: 10 },
+  { dx: 86, top: 62, lean: 20 },
+  { dx: 122, top: 104, lean: 30 },
+]
+
+const stems = stemSpecs.map((s, i) => {
+  const a = { x: cx - 18 + i * 6, y: potLip + 4 }
+  const b = { x: cx + s.dx, y: s.top }
+  const c = { x: cx + s.lean * 0.6 + (i - 3) * 4, y: (a.y + b.y) / 2 + 30 }
+  const leaves: { x: number; y: number; r: number; size: number; shade: boolean }[] = []
+  const pairs = 7
+  for (let k = 1; k <= pairs; k++) {
+    const t = 0.18 + (k / pairs) * 0.74
+    const p = quad(a, c, b, t)
+    const ang = tangent(a, c, b, t)
+    const size = 1.15 - t * 0.55 + rand() * 0.15
+    leaves.push({ ...p, r: ang - 58 - rand() * 14, size, shade: rand() > 0.62 })
+    leaves.push({ ...p, r: ang + 58 + rand() * 14, size, shade: rand() > 0.7 })
+  }
+  const tip = b
+  const spike = Array.from({ length: 6 }, (_, k) => ({
+    x: tip.x + Math.sin((i + k) * 1.7) * 1.2,
+    y: tip.y - 4 - k * 5.2,
+    r: 2.4 - k * 0.25,
+  }))
+  return { d: `M ${a.x} ${a.y} Q ${c.x} ${c.y} ${b.x} ${b.y}`, leaves, spike }
+})
+
+// Lotus petal band around the upper shrine.
+const petals = Array.from({ length: 9 }, (_, i) => {
+  const w = 140 / 9
+  const x = cx - 70 + i * w
+  return `M ${x} 352 Q ${x + w / 2} 330 ${x + w} 352`
+})
+---
+
+<svg
+  class={className}
+  viewBox={`0 0 400 ${H}`}
+  role="img"
+  aria-labelledby="tulsi-title"
+  xmlns="http://www.w3.org/2000/svg"
+>
+  <title id="tulsi-title">
+    Line engraving of a tulsi math, a courtyard shrine holding a holy basil
+    plant
+  </title>
+  <defs>
+    <pattern
+      id="tm-hatch"
+      width="3"
+      height="3"
+      patternUnits="userSpaceOnUse"
+      patternTransform="rotate(-40)"
+    >
+      <line x1="0" y1="0" x2="0" y2="3" class="ink" stroke-width="0.8"></line>
+    </pattern>
+    <pattern
+      id="tm-hatch-light"
+      width="4.6"
+      height="4.6"
+      patternUnits="userSpaceOnUse"
+      patternTransform="rotate(-40)"
+    >
+      <line x1="0" y1="0" x2="0" y2="4.6" class="ink" stroke-width="0.55"
+      ></line>
+    </pattern>
+  </defs>
+
+  <g fill="none" stroke-linejoin="round" stroke-linecap="round">
+    <line x1="20" y1={H - 0.5} x2="380" y2={H - 0.5} class="ink" stroke-width="1"
+    ></line>
+
+    <!-- base and lower cornice -->
+    <rect x={cx - 132} y={H - 24} width="264" height="24" class="paper ink" stroke-width="1.1"></rect>
+    <rect x={cx + 70} y={H - 24} width="62" height="24" fill="url(#tm-hatch-light)"></rect>
+    <rect x={cx - 118} y={H - 40} width="236" height="16" class="paper ink" stroke-width="1.1"></rect>
+    <rect x={cx + 62} y={H - 40} width="56" height="16" fill="url(#tm-hatch-light)"></rect>
+
+    <!-- main pillar -->
+    <rect x={cx - 90} y="372" width="180" height={H - 40 - 372} class="paper ink" stroke-width="1.2"></rect>
+    <rect x={cx + 46} y="372" width="44" height={H - 40 - 372} fill="url(#tm-hatch-light)"></rect>
+    <rect x={cx - 78} y="384" width="156" height={H - 40 - 396} class="ink" stroke-width="0.7"></rect>
+
+    <!-- niche with a lamp -->
+    <path
+      d={`M ${cx - 34} 552 L ${cx - 34} 478 Q ${cx - 34} 438 ${cx} 432 Q ${cx + 34} 438 ${cx + 34} 478 L ${cx + 34} 552 Z`}
+      fill="url(#tm-hatch)"
+      class="ink"
+      stroke-width="1.1"></path>
+    <path
+      d={`M ${cx - 42} 556 L ${cx - 42} 476 Q ${cx - 42} 430 ${cx} 422 Q ${cx + 42} 430 ${cx + 42} 476 L ${cx + 42} 556`}
+      class="ink"
+      stroke-width="0.8"></path>
+    <rect x={cx - 26} y="540" width="52" height="12" class="paper ink" stroke-width="0.9"></rect>
+    <path
+      d={`M ${cx - 14} 534 Q ${cx} 546 ${cx + 14} 534 Z`}
+      class="paper ink"
+      stroke-width="0.9"></path>
+    <path
+      d={`M ${cx} 532 C ${cx - 7} 524 ${cx - 3} 514 ${cx} 506 C ${cx + 3} 514 ${cx + 7} 524 ${cx} 532 Z`}
+      class="flame"></path>
+
+    <!-- upper cornices -->
+    <rect x={cx - 106} y="358" width="212" height="14" class="paper ink" stroke-width="1.1"></rect>
+    <rect x={cx + 64} y="358" width="42" height="14" fill="url(#tm-hatch-light)"></rect>
+    <rect x={cx - 98} y="352" width="196" height="6" class="paper ink" stroke-width="0.9"></rect>
+
+    <!-- upper shrine with lotus band -->
+    <rect x={cx - 70} y="300" width="140" height="52" class="paper ink" stroke-width="1.1"></rect>
+    <rect x={cx + 40} y="300" width="30" height="52" fill="url(#tm-hatch-light)"></rect>
+    {petals.map((d) => <path d={d} class="ink" stroke-width="0.8" />)}
+    <line x1={cx - 70} y1="316" x2={cx + 70} y2="316" class="ink" stroke-width="0.7"></line>
+    <rect x={cx - 82} y="292" width="164" height="8" class="paper ink" stroke-width="1"></rect>
+
+    <!-- pot -->
+    <path
+      d={`M ${cx - 26} 292 L ${cx - 30} 282 C ${cx - 62} 270 ${cx - 64} 236 ${cx - 34} 222 L ${cx - 30} ${potLip} L ${cx + 30} ${potLip} L ${cx + 34} 222 C ${cx + 64} 236 ${cx + 62} 270 ${cx + 30} 282 L ${cx + 26} 292 Z`}
+      class="paper ink"
+      stroke-width="1.2"></path>
+    <path
+      d={`M ${cx + 22} 226 C ${cx + 50} 238 ${cx + 50} 266 ${cx + 24} 278 L ${cx + 30} 282 C ${cx + 62} 270 ${cx + 64} 236 ${cx + 34} 222 Z`}
+      fill="url(#tm-hatch)"></path>
+    <rect x={cx - 38} y={potLip - 8} width="76" height="8" class="paper ink" stroke-width="1"></rect>
+    <path
+      d={`M ${cx - 50} 250 Q ${cx} 262 ${cx + 50} 250`}
+      class="ink"
+      stroke-width="0.7"></path>
+    <circle cx={cx - 8} cy="252" r="5" class="sindoor"></circle>
+
+    <!-- basil -->
+    {
+      stems.map((s) => (
+        <g>
+          <path d={s.d} class="ink" stroke-width="1.1" />
+          {s.leaves.map((l) => (
+            <g transform={`translate(${l.x} ${l.y}) rotate(${l.r}) scale(${l.size})`}>
+              <path
+                d="M 0 0 C 4 -5 13 -5 18 0 C 13 5 4 5 0 0 Z"
+                fill={l.shade ? "url(#tm-hatch)" : undefined}
+                class={l.shade ? "ink" : "paper ink"}
+                stroke-width="0.9"
+              />
+              <line x1="1" y1="0" x2="15" y2="0" class="ink" stroke-width="0.5" />
+            </g>
+          ))}
+          {s.spike.map((p) => (
+            <circle cx={p.x} cy={p.y} r={p.r} class="paper ink" stroke-width="0.7" />
+          ))}
+        </g>
+      ))
+    }
+  </g>
+</svg>
+
+<style>
+  svg {
+    display: block;
+    width: 100%;
+    height: auto;
+    overflow: visible;
+  }
+  .ink {
+    stroke: var(--ink);
+  }
+  .paper {
+    fill: var(--paper);
+  }
+  .flame,
+  .sindoor {
+    fill: var(--sindoor);
+  }
+</style>

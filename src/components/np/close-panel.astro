@@ -1,0 +1,32 @@
+---
+import Mandala from "../art/mandala.astro"
+
+interface Props {
+  label?: string
+  title?: string
+  body?: string
+}
+
+const {
+  label = "Start a project",
+  title = "Plant something with us",
+  body = "Tell us what you need. We reply with a written plan.",
+} = Astro.props
+---
+
+<section class="np-panel np-close" aria-labelledby="close-title">
+  <div class="np-close-text">
+    <p class="np-label">{label}</p>
+    <h2 id="close-title" class="np-mega np-mega-left">{title}</h2>
+    <p class="np-small">{body}</p>
+    <div class="np-btns np-btns-left">
+      <a class="np-btn np-btn-paper" href="mailto:seed@basilpot.com">
+        seed@basilpot.com
+      </a>
+      <a class="np-btn np-btn-line" href="/contact">Project enquiry</a>
+    </div>
+  </div>
+  <div class="np-close-art np-scan">
+    <Mandala class="np-mandala" />
+  </div>
+</section>

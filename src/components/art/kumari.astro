@@ -1,0 +1,334 @@
+---
+// Original line portrait of the Kumari, the living goddess of the Kathmandu Valley:
+// tall red crown with embroidered bands and heart sequins, yarn tassels, the painted
+// forehead with the fire eye, and kohl drawn out toward the temples.
+// Drawn in one ink so it can sit on paper or on a crimson panel.
+
+interface Props {
+  class?: string
+  /** Widen the canvas so the halo rays run edge to edge (for full-width panels). */
+  wide?: boolean
+}
+
+const { class: className, wide = false } = Astro.props
+
+// Unique ids so two copies on one page don't share patterns.
+const uid = Math.random().toString(36).slice(2, 8)
+const id = (name: string) => `km-${name}-${uid}`
+const url = (name: string) => `url(#${id(name)})`
+
+const W = 800
+const H = 860
+const cx = 400
+const hc = { x: 400, y: 330 } // halo centre
+
+type P = { x: number; y: number }
+const cubic = (a: P, b: P, c: P, d: P, t: number): P => {
+  const u = 1 - t
+  return {
+    x: u ** 3 * a.x + 3 * u * u * t * b.x + 3 * u * t * t * c.x + t ** 3 * d.x,
+    y: u ** 3 * a.y + 3 * u * u * t * b.y + 3 * u * t * t * c.y + t ** 3 * d.y,
+  }
+}
+
+// Crown: a fan rising from the forehead band
+const crownTop = "M 250 352 C 176 262 146 160 188 108 C 258 46 542 46 612 108 C 654 160 624 262 550 352"
+const crownBody = `${crownTop} Q 400 320 250 352 Z`
+const crownSegs: [P, P, P, P][] = [
+  [{ x: 250, y: 352 }, { x: 176, y: 262 }, { x: 146, y: 160 }, { x: 188, y: 108 }],
+  [{ x: 188, y: 108 }, { x: 258, y: 46 }, { x: 542, y: 46 }, { x: 612, y: 108 }],
+  [{ x: 612, y: 108 }, { x: 654, y: 160 }, { x: 624, y: 262 }, { x: 550, y: 352 }],
+]
+const crownOrigin = { x: 400, y: 372 }
+const bandScales = [0.93, 0.69, 0.45]
+const scaleAbout = (s: number) =>
+  `translate(${crownOrigin.x} ${crownOrigin.y}) scale(${s}) translate(${-crownOrigin.x} ${-crownOrigin.y})`
+
+// Heart sequins between the bands
+const heartRows = [
+  { s: 0.81, ts: [[0.35, 0.75], [0.12, 0.31, 0.5, 0.69, 0.88], [0.25, 0.65]] },
+  { s: 0.57, ts: [[0.55], [0.2, 0.5, 0.8], [0.45]] },
+]
+const hearts = heartRows.flatMap((row) =>
+  row.ts.flatMap((ts, seg) =>
+    ts.map((t) => {
+      const p = cubic(...crownSegs[seg], t)
+      const x = crownOrigin.x + (p.x - crownOrigin.x) * row.s
+      const y = crownOrigin.y + (p.y - crownOrigin.y) * row.s
+      const a = (Math.atan2(crownOrigin.y - y, crownOrigin.x - x) * 180) / Math.PI - 90
+      return { x, y, a, size: row.s > 0.7 ? 1 : 0.85 }
+    })
+  )
+).filter((h) => h.y < 290)
+
+// Yarn tassels: chains of wool balls held by brass rings
+const chain = (x: number, y0: number, n: number, sway: number, r = 1) =>
+  Array.from({ length: n }, (_, i) => ({
+    x: x + Math.sin(i * 0.9) * sway,
+    y: y0 + i * 74 * r,
+    rx: 26 * r,
+    ry: 31 * r,
+  }))
+const tasselsBack = [chain(168, 270, 8, 4, 1), chain(800 - 168, 270, 8, 4, 1)]
+const tasselsFront = [chain(222, 392, 5, 3, 0.92), chain(800 - 222, 392, 5, 3, 0.92)]
+
+// Halo rays
+const rays = Array.from({ length: 72 }, (_, i) => {
+  const a = (i * 5 * Math.PI) / 180
+  const r1 = 296
+  const r2 = wide ? (i % 2 ? 700 : 1000) : i % 2 ? 360 : 420
+  return {
+    x1: hc.x + Math.cos(a) * r1,
+    y1: hc.y + Math.sin(a) * r1,
+    x2: hc.x + Math.cos(a) * r2,
+    y2: hc.y + Math.sin(a) * r2,
+  }
+})
+
+// Necklace beads
+const beads = (a: P, c: P, b: P, n: number) =>
+  Array.from({ length: n }, (_, i) => {
+    const t = (i + 0.5) / n
+    return {
+      x: (1 - t) ** 2 * a.x + 2 * (1 - t) * t * c.x + t ** 2 * b.x,
+      y: (1 - t) ** 2 * a.y + 2 * (1 - t) * t * c.y + t ** 2 * b.y,
+    }
+  })
+const necklace1 = beads({ x: 336, y: 694 }, { x: 400, y: 790 }, { x: 464, y: 694 }, 17)
+const necklace2 = beads({ x: 318, y: 700 }, { x: 400, y: 838 }, { x: 482, y: 700 }, 21)
+---
+
+<svg
+  class={className}
+  viewBox={wide ? `-320 0 ${W + 640} ${H}` : `0 0 ${W} ${H}`}
+  preserveAspectRatio={wide ? "xMidYMin slice" : undefined}
+  role="img"
+  aria-labelledby="kumari-title"
+  xmlns="http://www.w3.org/2000/svg"
+>
+  <title id="kumari-title">
+    Line portrait of the Kumari in her red crown, with yarn tassels and the
+    painted fire eye on her forehead
+  </title>
+  <defs>
+    <pattern id={id("dots")} width="5" height="5" patternUnits="userSpaceOnUse">
+      <circle cx="2.5" cy="2.5" r="1.15" class="inkfill"></circle>
+    </pattern>
+    <pattern id={id("fine")} width="4" height="4" patternUnits="userSpaceOnUse">
+      <circle cx="2" cy="2" r="0.7" class="inkfill"></circle>
+    </pattern>
+    <pattern id={id("yarn")} width="3.2" height="8" patternUnits="userSpaceOnUse">
+      <line x1="1.6" y1="0" x2="1.6" y2="8" class="ink" stroke-width="1"></line>
+    </pattern>
+    <pattern id={id("lines")} width="4" height="4" patternUnits="userSpaceOnUse">
+      <line x1="0" y1="2" x2="4" y2="2" class="ink" stroke-width="0.9"></line>
+    </pattern>
+    <pattern id={id("weave")} width="18" height="18" patternUnits="userSpaceOnUse">
+      <path d="M 9 1 L 17 9 L 9 17 L 1 9 Z" class="ink" stroke-width="0.9" fill="none"></path>
+      <path d="M 9 6 L 12 9 L 9 12 L 6 9 Z" class="inkfill"></path>
+    </pattern>
+    <clipPath id={id("crown")}>
+      <path d={crownBody}></path>
+    </clipPath>
+    <clipPath id={id("eye")}>
+      <path d="M 298 472 Q 336 444 378 468 Q 340 494 298 472 Z"></path>
+    </clipPath>
+  </defs>
+
+  <g fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <!-- halo -->
+    {
+      rays.map((r) => (
+        <line x1={r.x1} y1={r.y1} x2={r.x2} y2={r.y2} class="ink" stroke-width="1" opacity="0.7" />
+      ))
+    }
+    <circle cx={hc.x} cy={hc.y} r="292" class="ink" stroke-width="1.4"></circle>
+    <circle cx={hc.x} cy={hc.y} r="276" class="ink" stroke-width="0.8" stroke-dasharray="2 6"></circle>
+
+    <!-- back tassels -->
+    {
+      tasselsBack.map((c) => (
+        <g>
+          <line x1={c[0].x} y1={c[0].y - 30} x2={c[c.length - 1].x} y2={c[c.length - 1].y} class="ink" stroke-width="1.2" />
+          {c.map((b) => (
+            <g>
+              <ellipse cx={b.x} cy={b.y} rx={b.rx} ry={b.ry} class="paper ink" stroke-width="1.3" />
+              <ellipse cx={b.x} cy={b.y} rx={b.rx} ry={b.ry} fill={url("yarn")} opacity="0.8" />
+              <rect x={b.x - 15} y={b.y + b.ry - 6} width="30" height="13" rx="3" class="paper ink" stroke-width="1.2" />
+              <line x1={b.x - 15} y1={b.y + b.ry} x2={b.x + 15} y2={b.y + b.ry} class="ink" stroke-width="0.7" />
+            </g>
+          ))}
+        </g>
+      ))
+    }
+
+    <!-- garment -->
+    <path
+      d="M 120 860 C 150 750 262 708 352 690 L 448 690 C 538 708 650 750 680 860 Z"
+      class="paper ink"
+      stroke-width="1.5"></path>
+    <path d="M 120 860 C 150 750 262 708 352 690 L 448 690 C 538 708 650 750 680 860 Z" fill={url("weave")} opacity="0.55"></path>
+    <path d="M 340 692 L 400 790 L 460 692" class="ink" stroke-width="14"></path>
+    <path d="M 340 692 L 400 790 L 460 692" stroke="var(--paper)" stroke-width="10"></path>
+    <path d="M 340 692 L 400 790 L 460 692" class="ink" stroke-width="2.5" stroke-dasharray="1 6"></path>
+
+    <!-- neck -->
+    <path d="M 364 596 C 366 630 362 668 352 692 L 448 692 C 438 668 434 630 436 596" class="paper ink" stroke-width="1.4"></path>
+    <path d="M 362 640 Q 400 668 438 640 L 438 660 Q 400 690 362 660 Z" fill={url("lines")} opacity="0.6"></path>
+
+    <!-- necklaces -->
+    <path d="M 336 694 Q 400 790 464 694" class="ink" stroke-width="1"></path>
+    {necklace1.map((b) => <circle cx={b.x} cy={b.y} r="4.2" class="paper ink" stroke-width="1" />)}
+    <path d="M 318 700 Q 400 838 482 700" class="ink" stroke-width="1"></path>
+    {necklace2.map((b, i) => <circle cx={b.x} cy={b.y} r={i % 2 ? 3.4 : 5} class={i % 2 ? "inkfill" : "paper ink"} stroke-width="1" />)}
+
+    <!-- hair at the sides -->
+    <path d="M 256 350 C 236 400 236 470 252 520 L 270 506 C 262 450 266 400 284 356 Z" class="inkfill"></path>
+    <path d="M 544 350 C 564 400 564 470 548 520 L 530 506 C 538 450 534 400 516 356 Z" class="inkfill"></path>
+
+    <!-- face -->
+    <path
+      d="M 264 344 C 250 474 300 590 400 614 C 500 590 550 474 536 344 Z"
+      class="paper ink"
+      stroke-width="1.6"></path>
+
+    <!-- painted forehead with the fire eye -->
+    <path
+      d="M 268 346 Q 400 326 532 346 L 530 396 C 492 382 438 392 400 446 C 362 392 308 382 270 396 Z"
+      class="inkfill"></path>
+    <path
+      d="M 280 392 C 316 380 366 390 400 434 C 434 390 484 380 520 392"
+      stroke="var(--paper)"
+      stroke-width="3"></path>
+    <circle cx={cx} cy="380" r="20" class="paper"></circle>
+    <circle cx={cx} cy="380" r="13" class="ink" stroke-width="2.4"></circle>
+    <circle cx={cx} cy="380" r="7" class="inkfill"></circle>
+    <circle cx={cx + 2.5} cy="377.5" r="2" class="paper"></circle>
+
+    <!-- eyes: left drawn, right mirrored -->
+    {
+      [0, 1].map((m) => (
+        <g transform={m ? `translate(${W} 0) scale(-1 1)` : undefined}>
+          <g transform="translate(338 470) scale(1.16) translate(-338 -470)">
+          <path d="M 298 472 Q 336 444 378 468 Q 340 494 298 472 Z" class="paper" />
+          <g clip-path={url("eye")}>
+            <circle cx="341" cy="470" r="17" class="inkfill" />
+            <circle cx="341" cy="470" r="17" class="ink" stroke-width="1" />
+            <circle cx={m ? 336 : 347} cy="462" r="5" class="paper" />
+            <circle cx={m ? 347 : 335} cy="478" r="2.4" class="paper" />
+          </g>
+          {/* kohl: heavy upper line swept out to the temple */}
+          <path d="M 296 473 Q 336 440 380 468" class="ink" stroke-width="6" />
+          <path d="M 300 471 C 286 466 274 458 258 444 C 276 452 290 458 306 464 Z" class="inkfill" />
+          <path d="M 300 475 Q 340 498 377 471" class="ink" stroke-width="2.6" />
+          <path d="M 300 475 C 288 470 278 464 266 456" class="ink" stroke-width="2" />
+          {[0, 1, 2].map((k) => (
+            <path
+              d={`M ${312 + k * 9} ${458 - k * 2} l ${-4 - k} ${-6 - k}`}
+              class="ink"
+              stroke-width="1.6"
+            />
+          ))}
+          </g>
+          {/* blush */}
+          <ellipse cx="316" cy="530" rx="26" ry="12" fill={url("fine")} opacity="0.8" />
+        </g>
+      ))
+    }
+
+    <!-- nose and mouth -->
+    <path d="M 398 506 C 396 518 392 526 390 530" class="ink" stroke-width="1.4"></path>
+    <path d="M 388 534 Q 394 538 400 535 Q 406 538 412 534" class="ink" stroke-width="1.3"></path>
+    <path d="M 376 566 Q 400 576 424 566" class="ink" stroke-width="1.8"></path>
+    <path d="M 382 569 Q 400 586 418 569 Q 400 575 382 569 Z" class="paper ink" stroke-width="1.2"></path>
+    <path d="M 382 569 Q 400 586 418 569 Q 400 575 382 569 Z" fill={url("dots")}></path>
+    <path d="M 372 562 Q 374 567 377 567 M 428 562 Q 426 567 423 567" class="ink" stroke-width="1.1"></path>
+
+    <!-- crown -->
+    <path d={crownBody} class="paper ink" stroke-width="1.8"></path>
+    <path d={crownBody} fill={url("dots")}></path>
+    <g clip-path={url("crown")}>
+    {
+      bandScales.map((s) => (
+        <g transform={scaleAbout(s)}>
+          <path d={crownTop} class="ink" stroke-width="24" vector-effect="non-scaling-stroke" />
+          <path d={crownTop} stroke="var(--paper)" stroke-width="20" vector-effect="non-scaling-stroke" />
+          <path d={crownTop} class="ink" stroke-width="5" stroke-dasharray="0.1 9" vector-effect="non-scaling-stroke" />
+          <path d={crownTop} class="ink" stroke-width="1" transform="translate(0 0)" vector-effect="non-scaling-stroke" stroke-dasharray="12 4" opacity="0.6" />
+        </g>
+      ))
+    }
+    {
+      hearts.map((h) => (
+        <g transform={`translate(${h.x} ${h.y}) rotate(${h.a}) scale(${h.size})`}>
+          <path
+            d="M 0 10 C -14 0 -13 -12 -6 -12 C -3 -12 -1 -10 0 -7 C 1 -10 3 -12 6 -12 C 13 -12 14 0 0 10 Z"
+            class="paper ink"
+            stroke-width="1.3"
+          />
+          <path d="M -6 -6 Q -5 -9 -2 -9" class="ink" stroke-width="1" />
+        </g>
+      ))
+    }
+    </g>
+
+    <!-- forehead band -->
+    <path d="M 240 354 Q 400 318 560 354" class="ink" stroke-width="22"></path>
+    <path d="M 240 354 Q 400 318 560 354" stroke="var(--paper)" stroke-width="18"></path>
+    <path d="M 240 354 Q 400 318 560 354" class="ink" stroke-width="4" stroke-dasharray="0.1 8"></path>
+    <path d="M 240 354 Q 400 318 560 354" class="ink" stroke-width="1" transform="translate(0 -5)" opacity="0.7"></path>
+    <path d="M 240 354 Q 400 318 560 354" class="ink" stroke-width="1" transform="translate(0 5)" opacity="0.7"></path>
+
+    <!-- big pom-poms at the crown's edges -->
+    {
+      [
+        [214, 336],
+        [586, 336],
+      ].map(([x, y]) => (
+        <g>
+          <circle cx={x} cy={y} r="36" class="paper ink" stroke-width="1.4" />
+          <circle cx={x} cy={y} r="36" fill={url("yarn")} />
+          <circle cx={x} cy={y} r="36" class="ink" stroke-width="1.4" />
+        </g>
+      ))
+    }
+
+    <!-- front tassels -->
+    {
+      tasselsFront.map((c) => (
+        <g>
+          {c.map((b) => (
+            <g>
+              <ellipse cx={b.x} cy={b.y} rx={b.rx} ry={b.ry} class="paper ink" stroke-width="1.4" />
+              <ellipse cx={b.x} cy={b.y} rx={b.rx} ry={b.ry} fill={url("yarn")} />
+              <rect x={b.x - 14} y={b.y + b.ry - 6} width="28" height="12" rx="3" class="paper ink" stroke-width="1.2" />
+              <line x1={b.x - 14} y1={b.y + b.ry} x2={b.x + 14} y2={b.y + b.ry} class="ink" stroke-width="0.7" />
+            </g>
+          ))}
+          {Array.from({ length: 9 }, (_, k) => {
+            const last = c[c.length - 1]
+            const x = last.x - 16 + k * 4
+            return <line x1={x} y1={last.y + last.ry + 6} x2={x + (k - 4) * 1.5} y2={last.y + last.ry + 40} class="ink" stroke-width="1.1" />
+          })}
+        </g>
+      ))
+    }
+  </g>
+</svg>
+
+<style>
+  svg {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+  .ink {
+    stroke: var(--ink);
+  }
+  .inkfill {
+    fill: var(--ink);
+  }
+  .paper {
+    fill: var(--paper);
+  }
+</style>

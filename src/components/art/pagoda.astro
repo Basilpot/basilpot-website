@@ -1,0 +1,369 @@
+---
+// Engraving-style elevation of a five-roofed Newar pagoda on a stepped plinth.
+// Every shape is generated here so the drawing scales cleanly and stays original.
+
+interface Props {
+  class?: string
+  sun?: boolean
+}
+
+const { class: className, sun = true } = Astro.props
+
+const W = 600
+const cx = W / 2
+const H = 860
+
+// Plinth: five terraces, widest at the ground.
+const stepH = 24
+const stepWidths = [540, 482, 424, 366, 308]
+const steps = stepWidths.map((w, i) => ({
+  x: cx - w / 2,
+  y: H - stepH * (i + 1),
+  w,
+  h: stepH,
+}))
+const plinthTop = H - stepH * stepWidths.length
+
+// Guardian pairs flank the stair on each terrace.
+const guardians = steps.map((s, i) => ({
+  y: s.y,
+  dx: 46 - i * 1.5,
+  scale: 1 - i * 0.08,
+}))
+
+// Temple tiers, bottom to top.
+const tierSpec = [
+  { wall: 226, wallH: 74, roof: 430, roofH: 54 },
+  { wall: 184, wallH: 52, roof: 356, roofH: 48 },
+  { wall: 148, wallH: 42, roof: 292, roofH: 42 },
+  { wall: 116, wallH: 34, roof: 232, roofH: 36 },
+  { wall: 88, wallH: 28, roof: 178, roofH: 32 },
+]
+
+type Tier = (typeof tierSpec)[number] & {
+  wallTop: number
+  wallBottom: number
+  eaveY: number
+  roofTop: number
+  roofTopW: number
+}
+
+const tiers: Tier[] = []
+let base = plinthTop
+for (const [i, t] of tierSpec.entries()) {
+  const wallBottom = base
+  const wallTop = wallBottom - t.wallH
+  const eaveY = wallTop + 18
+  const roofTop = eaveY - t.roofH
+  const next = tierSpec[i + 1]
+  const roofTopW = next ? next.wall + 10 : 40
+  tiers.push({ ...t, wallTop, wallBottom, eaveY, roofTop, roofTopW })
+  base = roofTop + 2
+}
+const crown = tiers[tiers.length - 1].roofTop
+// Crop the canvas to the drawing: finial tip sits ~110 above the crown.
+const top = Math.floor(crown - 124)
+
+function roofPath(t: Tier) {
+  const l = cx - t.roof / 2
+  const r = cx + t.roof / 2
+  const tl = cx - t.roofTopW / 2
+  const tr = cx + t.roofTopW / 2
+  const sag = t.roofH * 0.28
+  // Flared roof: concave slope with a slight lift at the eave tips.
+  return [
+    `M ${l - 6} ${t.eaveY - 6}`,
+    `Q ${l + (tl - l) * 0.35} ${t.eaveY - sag * 0.4} ${tl} ${t.roofTop}`,
+    `L ${tr} ${t.roofTop}`,
+    `Q ${r - (r - tr) * 0.35} ${t.eaveY - sag * 0.4} ${r + 6} ${t.eaveY - 6}`,
+    `L ${r} ${t.eaveY}`,
+    `L ${l} ${t.eaveY}`,
+    "Z",
+  ].join(" ")
+}
+
+function rafters(t: Tier) {
+  const count = Math.round(t.roof / 7)
+  return Array.from({ length: count + 1 }, (_, i) => {
+    const f = i / count
+    const x1 = cx - t.roofTopW / 2 + t.roofTopW * f
+    const x2 = cx - t.roof / 2 + t.roof * f
+    return { x1, y1: t.roofTop + 1, x2, y2: t.eaveY - 1 }
+  })
+}
+
+function fringe(t: Tier) {
+  const count = Math.round(t.roof / 6)
+  return Array.from({ length: count + 1 }, (_, i) => {
+    const x = cx - t.roof / 2 + (t.roof * i) / count
+    const len = i % 2 === 0 ? 9 : 5
+    return { x, y1: t.eaveY + 4, y2: t.eaveY + 4 + len, bell: i % 4 === 0 }
+  })
+}
+
+function struts(t: Tier) {
+  const m = Math.max(3, Math.round(t.wall / 34))
+  return Array.from({ length: m * 2 + 1 }, (_, i) => {
+    const s = (i - m) / m
+    const top = { x: cx + s * (t.roof / 2 - 18), y: t.eaveY + 4 }
+    const bottom = { x: cx + s * (t.wall / 2 - 4), y: t.wallTop + t.wallH * 0.62 }
+    return { top, bottom }
+  })
+}
+
+function openings(t: Tier, i: number) {
+  const n = i === 0 ? 3 : i < 3 ? 3 : 1
+  const gap = t.wall / (n + 1)
+  const w = i === 0 ? 30 : Math.max(16, t.wall / 7)
+  const h = i === 0 ? 40 : Math.max(10, t.wallH * 0.32)
+  const y = t.wallBottom - h - (i === 0 ? 4 : t.wallH * 0.12)
+  return Array.from({ length: n }, (_, k) => ({
+    x: cx - t.wall / 2 + gap * (k + 1) - w / 2,
+    y,
+    w,
+    h,
+  }))
+}
+---
+
+<svg
+  class={className}
+  viewBox={`0 ${top} ${W} ${H - top}`}
+  role="img"
+  aria-labelledby="pagoda-title"
+  xmlns="http://www.w3.org/2000/svg"
+>
+  <title id="pagoda-title">
+    Line engraving of a five-roofed pagoda on a stepped plinth
+  </title>
+  <defs>
+    <pattern
+      id="pg-hatch"
+      width="3.2"
+      height="3.2"
+      patternUnits="userSpaceOnUse"
+      patternTransform="rotate(-38)"
+    >
+      <line x1="0" y1="0" x2="0" y2="3.2" class="ink" stroke-width="0.9"></line>
+    </pattern>
+    <pattern
+      id="pg-hatch-light"
+      width="5"
+      height="5"
+      patternUnits="userSpaceOnUse"
+      patternTransform="rotate(-38)"
+    >
+      <line x1="0" y1="0" x2="0" y2="5" class="ink" stroke-width="0.6"></line>
+    </pattern>
+    <pattern id="pg-lattice" width="5" height="5" patternUnits="userSpaceOnUse">
+      <path d="M0 0 L5 5 M5 0 L0 5" class="ink" stroke-width="0.6" fill="none"
+      ></path>
+    </pattern>
+    <filter id="pg-grain" x="0" y="0" width="100%" height="100%">
+      <feTurbulence
+        type="fractalNoise"
+        baseFrequency="0.9"
+        numOctaves="2"
+        seed="7"
+        result="noise"></feTurbulence>
+      <feColorMatrix
+        in="noise"
+        type="matrix"
+        values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 -0.9 1.25"
+        result="speckle"></feColorMatrix>
+      <feComposite in="SourceGraphic" in2="speckle" operator="in"
+      ></feComposite>
+    </filter>
+  </defs>
+
+  {
+    sun && (
+      <g class="pagoda-sun">
+        <circle cx={cx + 92} cy={crown + 210} r="196" class="sun" filter="url(#pg-grain)" />
+      </g>
+    )
+  }
+
+  <g class="pagoda-line" fill="none" stroke-linejoin="round" stroke-linecap="round">
+    <!-- ground line -->
+    <line x1="-40" y1={H - 0.5} x2={W} y2={H - 0.5} class="ink" stroke-width="1"></line>
+
+    <!-- plinth terraces -->
+    {
+      steps.map((s) => (
+        <g>
+          <rect x={s.x} y={s.y} width={s.w} height={s.h} class="paper ink" stroke-width="1.1" />
+          <line x1={s.x} y1={s.y + 4} x2={s.x + s.w} y2={s.y + 4} class="ink" stroke-width="0.6" />
+          <rect x={s.x + s.w * 0.78} y={s.y + 5} width={s.w * 0.22} height={s.h - 5} fill="url(#pg-hatch-light)" />
+        </g>
+      ))
+    }
+
+    <!-- central stair -->
+    <rect x={cx - 30} y={plinthTop} width="60" height={H - plinthTop} class="paper ink" stroke-width="1.1"></rect>
+    {
+      Array.from({ length: 15 }, (_, i) => (
+        <line
+          x1={cx - 30}
+          x2={cx + 30}
+          y1={plinthTop + ((H - plinthTop) / 15) * (i + 1)}
+          y2={plinthTop + ((H - plinthTop) / 15) * (i + 1)}
+          class="ink"
+          stroke-width="0.7"
+        />
+      ))
+    }
+
+    <!-- guardians -->
+    {
+      guardians.map((g) =>
+        [-1, 1].map((side) => {
+          const x = cx + side * g.dx
+          const s = g.scale
+          return (
+            <g transform={`translate(${x} ${g.y}) scale(${side * s} ${s})`}>
+              <rect x="-7" y="-6" width="14" height="6" class="paper ink" stroke-width="0.9" />
+              <path
+                d="M -5 -6 C -6 -14 -4 -20 0 -22 C 4 -22 6 -18 5 -14 L 7 -12 L 4 -11 L 4 -6 Z"
+                class="paper ink"
+                stroke-width="0.9"
+              />
+              <circle cx="1" cy="-25" r="3.6" class="paper ink" stroke-width="0.9" />
+              <line x1="-3" y1="-16" x2="-3" y2="-7" class="ink" stroke-width="0.5" />
+            </g>
+          )
+        })
+      )
+    }
+
+    <!-- tiers -->
+    {
+      tiers.map((t, i) => (
+        <g class="tier">
+          {/* wall */}
+          <rect
+            x={cx - t.wall / 2}
+            y={t.wallTop}
+            width={t.wall}
+            height={t.wallH}
+            class="paper ink"
+            stroke-width="1.1"
+          />
+          <rect
+            x={cx - t.wall / 2}
+            y={t.wallTop}
+            width={t.wall}
+            height={t.wallH * 0.62}
+            fill="url(#pg-hatch)"
+          />
+          <line
+            x1={cx - t.wall / 2}
+            x2={cx + t.wall / 2}
+            y1={t.wallBottom - 5}
+            y2={t.wallBottom - 5}
+            class="ink"
+            stroke-width="0.7"
+          />
+          {openings(t, i).map((o) => (
+            <g>
+              <rect x={o.x - 3} y={o.y - 3} width={o.w + 6} height={o.h + 3} class="paper ink" stroke-width="0.9" />
+              <rect x={o.x} y={o.y} width={o.w} height={o.h} fill="url(#pg-lattice)" class="ink" stroke-width="0.8" />
+              {i === 0 && (
+                <path
+                  d={`M ${o.x - 3} ${o.y - 3} Q ${o.x + o.w / 2} ${o.y - 16} ${o.x + o.w + 3} ${o.y - 3}`}
+                  class="ink"
+                  stroke-width="0.9"
+                />
+              )}
+            </g>
+          ))}
+
+          {/* carved roof struts */}
+          {struts(t).map(({ top, bottom }) => (
+            <path
+              d={`M ${bottom.x - 2.2} ${bottom.y} L ${top.x - 3} ${top.y} L ${top.x + 3} ${top.y} L ${bottom.x + 2.2} ${bottom.y} Z`}
+              class="paper ink"
+              stroke-width="0.8"
+            />
+          ))}
+
+          {/* roof */}
+          <path d={roofPath(t)} class="paper ink" stroke-width="1.2" />
+          {rafters(t).map((r) => (
+            <line x1={r.x1} y1={r.y1} x2={r.x2} y2={r.y2} class="ink" stroke-width="0.55" />
+          ))}
+          <rect
+            x={cx - t.roof / 2}
+            y={t.eaveY}
+            width={t.roof}
+            height="4"
+            class="paper ink"
+            stroke-width="1"
+          />
+          {fringe(t).map((f) => (
+            <g>
+              <line x1={f.x} y1={f.y1} x2={f.x} y2={f.y2} class="ink" stroke-width="0.6" />
+              {f.bell && <circle cx={f.x} cy={f.y2 + 1.8} r="1.6" class="paper ink" stroke-width="0.6" />}
+            </g>
+          ))}
+        </g>
+      ))
+    }
+
+    <!-- gajur (finial) -->
+    <g>
+      <rect x={cx - 16} y={crown - 8} width="32" height="8" class="paper ink" stroke-width="1"></rect>
+      <path
+        d={`M ${cx - 14} ${crown - 8} C ${cx - 16} ${crown - 30} ${cx + 16} ${crown - 30} ${cx + 14} ${crown - 8} Z`}
+        class="paper ink"
+        stroke-width="1"></path>
+      {
+        [0, 1, 2, 3].map((k) => (
+          <ellipse
+            cx={cx}
+            cy={crown - 30 - k * 9}
+            rx={10 - k * 1.8}
+            ry="3.5"
+            class="paper ink"
+            stroke-width="0.9"
+          />
+        ))
+      }
+      <path
+        d={`M ${cx - 4} ${crown - 60} C ${cx - 6} ${crown - 74} ${cx} ${crown - 86} ${cx} ${crown - 98} C ${cx} ${crown - 86} ${cx + 6} ${crown - 74} ${cx + 4} ${crown - 60} Z`}
+        class="paper ink"
+        stroke-width="1"></path>
+      <line x1={cx} y1={crown - 98} x2={cx} y2={crown - 110} class="ink" stroke-width="1"></line>
+    </g>
+
+    <!-- pataka: metal banner hanging from the crown -->
+    <path
+      d={`M ${cx - 3} ${crown - 4} C ${cx - 6} ${tiers[3].eaveY} ${cx - 2} ${tiers[2].eaveY} ${cx - 4} ${tiers[1].eaveY + 6} L ${cx + 4} ${tiers[1].eaveY + 6} C ${cx + 6} ${tiers[2].eaveY} ${cx + 2} ${tiers[3].eaveY} ${cx + 3} ${crown - 4} Z`}
+      class="paper ink"
+      stroke-width="0.9"></path>
+    {
+      Array.from({ length: 16 }, (_, k) => {
+        const y = crown + ((tiers[1].eaveY + 6 - crown) / 16) * (k + 0.5)
+        return <line x1={cx - 3} x2={cx + 3} y1={y} y2={y} class="ink" stroke-width="0.5" />
+      })
+    }
+  </g>
+</svg>
+
+<style>
+  svg {
+    display: block;
+    width: 100%;
+    height: auto;
+    overflow: visible;
+  }
+  .ink {
+    stroke: var(--ink);
+  }
+  .paper {
+    fill: var(--paper);
+  }
+  .sun {
+    fill: var(--sindoor);
+  }
+</style>

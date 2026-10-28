@@ -1,0 +1,48 @@
+---
+// Shell for pages in the new design: fonts, header, footer and the shared stylesheet.
+import Footer from "../components/np/footer.astro"
+import Header from "../components/np/header.astro"
+import Main from "./main.astro"
+import "lenis/dist/lenis.css"
+import "../styles/np.css"
+
+interface Props {
+  title: string
+  description: string
+  serviceType?: string
+}
+
+const { title, description, serviceType } = Astro.props
+---
+
+<Main title={title} description={description} serviceType={serviceType}>
+  <Fragment slot="head">
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500&family=JetBrains+Mono:wght@400&family=Sofia+Sans+Condensed:wght@400;500&family=Sofia+Sans+Extra+Condensed:wght@300;400&display=swap"
+    />
+    <slot name="head" />
+  </Fragment>
+  <div class="np">
+    <a href="#main" class="skip-link">Skip to content</a>
+    <Header />
+    <main id="main" tabindex="-1">
+      <slot />
+    </main>
+    <Footer />
+  </div>
+</Main>
+
+<script>
+  import Lenis from "lenis"
+
+  // Smooth scrolling, skipped for people who ask for reduced motion.
+  if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    new Lenis({
+      autoRaf: true,
+      anchors: { offset: -24 },
+      // Let horizontal rails (client cards) scroll natively.
+      prevent: (node) => node.classList.contains("np-rail"),
+    })
+  }
+</script>

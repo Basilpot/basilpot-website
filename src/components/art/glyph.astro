@@ -1,0 +1,157 @@
+---
+// Small line ornaments drawn from Nepali motifs. They inherit currentColor.
+
+type Name = "knot" | "lotus" | "pagoda" | "peak" | "kalash" | "wheel" | "flags"
+
+interface Props {
+  name: Name
+  size?: number
+  class?: string
+  label?: string
+}
+
+const { name, size = 40, class: className, label } = Astro.props
+
+const corners = [
+  [-1, -1],
+  [1, -1],
+  [1, 1],
+  [-1, 1],
+]
+const lines = [-9, -3, 3, 9]
+
+const flagPoints = [0.12, 0.3, 0.5, 0.7, 0.88].map((t) => ({
+  x: 4 + 40 * t,
+  y: 13 + 44 * t * (1 - t),
+}))
+
+const lotusPetals = Array.from({ length: 8 }, (_, i) => i * 45)
+---
+
+<svg
+  class:list={["glyph", className]}
+  width={size}
+  height={size}
+  viewBox={name === "knot" || name === "lotus" ? "-32 -32 64 64" : "0 0 48 48"}
+  fill="none"
+  stroke="currentColor"
+  stroke-width={name === "knot" ? 2 : 1.2}
+  stroke-linecap="round"
+  stroke-linejoin="round"
+  role={label ? "img" : undefined}
+  aria-label={label}
+  aria-hidden={label ? undefined : "true"}
+>
+  {
+    name === "knot" && (
+      <g transform="rotate(45)">
+        {lines.map((p) => (
+          <>
+            <line x1={p} y1="-12" x2={p} y2="12" />
+            <line x1="-12" y1={p} x2="12" y2={p} />
+          </>
+        ))}
+        {corners.map(([sx, sy]) => (
+          <>
+            <path
+              d={`M ${12 * sx} ${9 * sy} C ${19 * sx} ${9 * sy} ${9 * sx} ${19 * sy} ${9 * sx} ${12 * sy}`}
+            />
+            <path
+              d={`M ${12 * sx} ${3 * sy} C ${27 * sx} ${3 * sy} ${3 * sx} ${27 * sy} ${3 * sx} ${12 * sy}`}
+            />
+          </>
+        ))}
+      </g>
+    )
+  }
+  {
+    name === "lotus" && (
+      <g>
+        {lotusPetals.map((a) => (
+          <path transform={`rotate(${a})`} d="M 0 -6 C 7 -12 6 -22 0 -28 C -6 -22 -7 -12 0 -6 Z" />
+        ))}
+        {lotusPetals.map((a) => (
+          <path
+            transform={`rotate(${a + 22.5})`}
+            d="M 0 -7 C 4 -11 4 -16 0 -19 C -4 -16 -4 -11 0 -7 Z"
+          />
+        ))}
+        <circle r="5" />
+        <circle r="1.6" fill="currentColor" />
+      </g>
+    )
+  }
+  {
+    name === "pagoda" && (
+      <g>
+        <path d="M24 3 L24 7" />
+        <path d="M15 13 Q20 11 22 7 L26 7 Q28 11 33 13 Z" />
+        <rect x="18" y="13" width="12" height="7" />
+        <path d="M7 25 Q17 22 20 20 L28 20 Q31 22 41 25 Z" />
+        <rect x="13" y="25" width="22" height="15" />
+        <path d="M21 40 L21 31 Q24 28 27 31 L27 40" />
+        <path d="M4 44 L44 44 M8 40 L40 40" />
+      </g>
+    )
+  }
+  {
+    name === "peak" && (
+      <g>
+        <circle cx="11" cy="11" r="4" />
+        <path d="M3 40 L15 24 L20 29 L29 10 L32 16 L35 9 L45 40" />
+        <path d="M29 10 L27 22 L31 19 L33 26" />
+        <path d="M8 44 Q18 41 24 44 T40 44" />
+      </g>
+    )
+  }
+  {
+    name === "kalash" && (
+      <g>
+        <circle cx="24" cy="9" r="4.5" />
+        <path d="M17 15 Q14 9 10 10 M31 15 Q34 9 38 10 M20 14 Q19 7 16 5 M28 14 Q29 7 32 5" />
+        <path d="M17 14 L31 14 L30 18 L18 18 Z" />
+        <path d="M18 18 C7 21 8 35 17 38 L16 42 L32 42 L31 38 C40 35 41 21 30 18" />
+        <path d="M12 28 Q24 32 36 28" />
+      </g>
+    )
+  }
+  {
+    name === "wheel" && (
+      <g>
+        <circle cx="24" cy="24" r="16" />
+        <circle cx="24" cy="24" r="12.5" />
+        <circle cx="24" cy="24" r="3" />
+        {lotusPetals.map((a) => (
+          <g transform={`rotate(${a} 24 24)`}>
+            <path d="M24 21 L24 11.5" />
+            <circle cx="24" cy="5.5" r="1.6" />
+          </g>
+        ))}
+      </g>
+    )
+  }
+  {
+    name === "flags" && (
+      <g>
+        <path d="M4 13 Q24 35 44 13" />
+        <path d="M4 13 L4 44 M44 13 L44 44" />
+        {flagPoints.map((p, i) => (
+          <rect
+            x={p.x - 2.6}
+            y={p.y}
+            width="5.2"
+            height="8"
+            transform={`rotate(${(i - 2) * -6} ${p.x} ${p.y})`}
+          />
+        ))}
+      </g>
+    )
+  }
+</svg>
+
+<style>
+  .glyph {
+    display: block;
+    flex: none;
+  }
+</style>

@@ -1,0 +1,35 @@
+---
+import Mark from "../art/mark.astro"
+
+const path = Astro.url.pathname.replace(/\/$/, "") || "/"
+const links = [
+  ["Services", "/services"],
+  ["Clients", "/clients"],
+  ["About", "/about"],
+  ["Contact", "/contact"],
+] as const
+const current = (href: string) => (path === href ? "page" : undefined)
+---
+
+<header class="np-header">
+  <nav aria-label="Primary" class="np-nav">
+    {
+      links.slice(0, 2).map(([label, href]) => (
+        <a href={href} aria-current={current(href)}>
+          {label}
+        </a>
+      ))
+    }
+    <a href="/" class="np-logo" aria-label="Basilpot home">
+      <Mark size={30} />
+      <span>Basil<br />pot</span>
+    </a>
+    {
+      links.slice(2).map(([label, href]) => (
+        <a href={href} aria-current={current(href)}>
+          {label}
+        </a>
+      ))
+    }
+  </nav>
+</header>
